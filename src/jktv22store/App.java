@@ -49,10 +49,7 @@ class App {
                     break;
                  case 6:
                     
-                    break;
-                 case 7:                    
-                   
-                    break;
+                    break;                
                 default:
                     System.out.println("Choice number from list !");;
             }
