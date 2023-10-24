@@ -6,6 +6,7 @@
 package jktv22store;
 
 import java.util.Scanner;
+import tools.KeyboardInput;
 
 /**
  *
@@ -19,14 +20,14 @@ class App {
         do {
             System.out.println("Select task: ");
             System.out.println("0. Exit");
-            System.out.println("1.Add new item");
+            System.out.println("1.Add new product");
             System.out.println("2.Add new customer");
-            System.out.println("3.Sold a item to customer");
-            System.out.println("4.Print list customers");
-            System.out.println("5.Print list items");
-            System.out.println("6.Print list sold out items");
+            System.out.println("3.Print list products");
+            System.out.println("4.Sold a product to customer");
+            System.out.println("5.Print list customers");
+            System.out.println("6.Print list sold out products");
             System.out.print("Set task: ");
-            int task = scanner.nextInt();scanner.nextLine();            
+             int task = KeyboardInput.inputNumber(0, 6);             
             switch (task) {
                 case 0:
                     System.out.println("Good buy");
