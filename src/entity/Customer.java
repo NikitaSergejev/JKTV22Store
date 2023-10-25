@@ -20,7 +20,7 @@ public class Customer {
     public Customer() {
     }
 
-    public Customer(String firstname, String lastname, String phone, int money) {
+    public Customer(String firstname, String lastname, String phone, int money){
         this.firstname = firstname;
         this.lastname = lastname;
         this.phone = phone;
