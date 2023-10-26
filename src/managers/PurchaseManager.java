@@ -9,6 +9,6 @@ package managers;
  *
  * @author nikit
  */
-public class OrderManager {
+public class PurchaseManager {
     
 }

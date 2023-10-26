@@ -12,16 +12,16 @@ import java.util.Objects;
  *
  * @author nikit
  */
-public class Order {
+public class Purchase {
     private Product product;
     private Customer customer;
     private Date date;
     private int quantity;
 
-    public Order() {
+    public Purchase() {
     }
 
-    public Order(Product product, Customer customer, Date date, int quantity) {
+    public Purchase(Product product, Customer customer, Date date, int quantity) {
         this.product = product;
         this.customer = customer;
         this.date = date;
@@ -81,7 +81,7 @@ public class Order {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Order other = (Order) obj;
+        final Purchase other = (Purchase) obj;
         if (this.quantity != other.quantity) {
             return false;
         }
