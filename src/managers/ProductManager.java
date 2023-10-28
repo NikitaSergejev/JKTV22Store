@@ -27,7 +27,7 @@ public class ProductManager {
        Product product = new Product();
         System.out.print("Please input type photo camera: ");
         product.setType(scanner.nextLine());
-        System.out.print("input price (not over 5000): ");
+        System.out.print("input price: ");
         product.setPrice(KeyboardInput.inputNumber(1, 5000));
         System.out.print("Input quantity: ");
         product.setQuantity(KeyboardInput.inputNumber(1, 3000));
@@ -41,5 +41,19 @@ public class ProductManager {
         System.out.println("Added product: ");
         System.out.println(product.toString());
         return product;
+    }
+
+    public void printListProducts(Product[] products) {
+        System.out.println("-----List products ------");
+        for (int i = 0; i < products.length; i++) {
+            System.out.printf("%d. %s %s. %s. %s. %s%n",
+                    i+1,
+                    products[i].getType(),
+                    products[i].getPrice(),
+                    products[i].getQuantity(),
+                    products[i].getBrand(),
+                    products[i].getModel()
+            );             
+        }
     }
 }
