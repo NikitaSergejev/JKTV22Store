@@ -13,7 +13,7 @@ import java.util.Objects;
  */
 public class Product {
    private String type;
-   private int price;
+   public int price;
    private int quantity;
    private String brand;
    private String Model;

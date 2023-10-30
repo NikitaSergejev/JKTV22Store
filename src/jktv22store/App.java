@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 import managers.CustomerManager;
 import managers.ProductManager;
+import managers.PurchaseManager;
 import tools.KeyboardInput;
 
 /**
@@ -25,6 +26,7 @@ class App {
     private final Scanner scanner;
     private final ProductManager productManager;
     private final CustomerManager customerManager;
+    private final PurchaseManager purchaseManager;
     
     public App(){
       this.products = new Product[0];
@@ -32,6 +34,7 @@ class App {
       this.scanner = new Scanner(System.in);  
       this.productManager = new ProductManager(scanner);  
       this.customerManager = new CustomerManager(scanner);
+      this.purchaseManager = new PurchaseManager(scanner, productManager, customerManager);
     }
     void run() {
          boolean repeat = true;
@@ -67,7 +70,7 @@ class App {
                     customerManager.printListCustomers(customers);
                     break;
                 case 5:
-                    //addPurchaseToArray(purchaseManager.sellProduct(products, customers)); 
+                    addPurchaseToArray(purchaseManager.sellProduct(products, customers)); 
                     break;
                 case 6:
                     //productManager.printListSoldProducts(purchaies);
@@ -94,6 +97,11 @@ class App {
     private void addCustomerToArray(Customer customer) {
       this.customers = Arrays.copyOf(customers, customers.length + 1);
         this.customers[customers.length -1 ] = customer;
+    }
+
+    private void addPurchaseToArray(Purchase purchase) {
+        this.purchaies = Arrays.copyOf(purchaies, purchaies.length + 1);
+        this.purchaies[purchaies.length -1] = purchase;
     }
 }
     
