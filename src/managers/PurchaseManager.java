@@ -11,6 +11,7 @@ import entity.Purchase;
 import java.util.GregorianCalendar;
 
 import java.util.Scanner;
+import tools.KeyboardInput;
 
 /**
  *
@@ -40,23 +41,35 @@ public class PurchaseManager {
             5.Покупатель вводит количество количество товара 
             5.Проверка на количества денег у покупателя
             6.Добавить в purchase дату покупки товара
+            7.Вычисления денег у покупателя после покупки
        */
        customerManager.printListCustomers(customers);
        System.out.print("input number customer: ");
-       int selectedCustomerNumber = scanner.nextInt();scanner.nextLine();
+       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, 100));
        purchase.setCustomer(customers[selectedCustomerNumber-1]);
        productManager.printListProducts(products); 
-       int selectedProductNumber = scanner.nextInt();scanner.nextLine();
-       if (product.price <= purchase.getCustomer().money) { // проверка на достаточность денег
-                    purchase.setProduct(product);
-                    purchase.setDate(new GregorianCalendar().getTime());
-      }else{
-           System.out.println("Not enouth money");
-       } 
-      return purchase;
+       int selectedProductNumber = (KeyboardInput.inputNumber(1, 500));
+       Product selectedProduct = products[selectedProductNumber - 1];
+       if (selectedProduct != null) {
+       System.out.print("input quantity: ");   
+       int selectedQuantityProduct = (KeyboardInput.inputNumber(1, 500));
+       if (selectedProduct.getQuantity() >= selectedQuantityProduct){
+       selectedProduct.setQuantity(selectedProduct.getQuantity() - selectedQuantityProduct);
+        System.out.println("Quantity product enough");
+       }else{
+       System.out.println("Not enough, sold out");
+       }     
+       if (selectedProduct.getPrice() <= purchase.getCustomer().getMoney()) {           
+        purchase.setProduct(selectedProduct);
+        purchase.setDate(new GregorianCalendar().getTime());
+        purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - selectedProduct.getPrice());
+    } else {   
+        System.out.println("Not enough money, or quantity product");
+    }    
+  }   else {
+    System.out.println("Invalid product selection");
+}    
+  
+  return purchase;
   }
-  
-  
-  
-  
 }

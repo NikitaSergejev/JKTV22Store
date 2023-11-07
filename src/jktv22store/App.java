@@ -31,6 +31,7 @@ class App {
     public App(){
       this.products = new Product[0];
       this.customers = new Customer[0];
+      this.purchaies = new Purchase[0];
       this.scanner = new Scanner(System.in);  
       this.productManager = new ProductManager(scanner);  
       this.customerManager = new CustomerManager(scanner);
@@ -39,6 +40,8 @@ class App {
     void run() {
          boolean repeat = true;
         Scanner scanner = new Scanner(System.in);
+        System.out.println("---------Photography world------------");
+        System.out.println("Hello it`s shop where sold photo camera");
         do {
             System.out.println("Select task: ");
             System.out.println("0. Exit");
@@ -99,7 +102,7 @@ class App {
         this.customers[customers.length -1 ] = customer;
     }
 
-    private void addPurchaseToArray(Purchase purchase) {
+    private void addPurchaseToArray(Purchase purchase) {     
         this.purchaies = Arrays.copyOf(purchaies, purchaies.length + 1);
         this.purchaies[purchaies.length -1] = purchase;
     }
