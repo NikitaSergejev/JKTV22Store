@@ -54,16 +54,18 @@ public class PurchaseManager {
        System.out.print("input quantity: ");   
        int selectedQuantityProduct = (KeyboardInput.inputNumber(1, 500));
        if (selectedProduct.getQuantity() >= selectedQuantityProduct){
-       selectedProduct.setQuantity(selectedProduct.getQuantity() - selectedQuantityProduct);
-        System.out.println("Quantity product enough");
-       }else{
-       System.out.println("Not enough, sold out");
-       }     
-       if (selectedProduct.getPrice() <= purchase.getCustomer().getMoney()) {           
-        purchase.setProduct(selectedProduct);
-        purchase.setDate(new GregorianCalendar().getTime());
-        purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - selectedProduct.getPrice());
-    } else {   
+        selectedProduct.setQuantity(selectedProduct.getQuantity() - selectedQuantityProduct);
+         System.out.println("Quantity product enough");
+        /*else{
+        System.out.println("Not enough, sold out");
+        }  */   
+        if (selectedProduct.getPrice() <= purchase.getCustomer().getMoney()) {           
+         purchase.setProduct(selectedProduct);
+         purchase.setDate(new GregorianCalendar().getTime());
+         purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - selectedProduct.getPrice());
+        } 
+       }    
+       else {   
         System.out.println("Not enough money, or quantity product");
     }    
   }   else {
