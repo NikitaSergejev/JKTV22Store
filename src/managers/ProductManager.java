@@ -6,6 +6,7 @@
 package managers;
 
 import entity.Product;
+import java.util.List;
 import java.util.Scanner;
 import tools.KeyboardInput;
 
@@ -43,16 +44,16 @@ public class ProductManager {
         return product;
     }
 
-    public void printListProducts(Product[] products) {
+    public void printListProducts(List<Product> products) {
         System.out.println("-----List products ------");
-        for (int i = 0; i < products.length; i++) {
+        for (int i = 0; i < products.size(); i++) {    
             System.out.printf("%d. %s %s. %s. %s. %s%n",
                     i+1,
-                    products[i].getType(),
-                    products[i].getPrice(),
-                    products[i].getQuantity(),
-                    products[i].getBrand(),
-                    products[i].getModel()
+                    products.get(i).getType(),
+                    products.get(i).getPrice(),
+                    products.get(i).getQuantity(),
+                    products.get(i).getBrand(),
+                    products.get(i).getModel()
             );             
         }
     }

@@ -5,16 +5,17 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author nikit
  */
-public class Product {
+public class Product implements Serializable {
    private String type;
    public int price;
-   private int quantity;
+   private int quantity;//количество товара 
    private String brand;
    private String Model;
 

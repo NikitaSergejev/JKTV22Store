@@ -5,6 +5,7 @@
  */
 package entity;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ import java.util.Objects;
  *
  * @author nikit
  */
-public class Purchase {
+public class Purchase implements Serializable {
     private Product product;
     private Customer customer;
     private Date date;

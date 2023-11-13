@@ -9,6 +9,7 @@ import entity.Customer;
 import entity.Product;
 import entity.Purchase;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import java.util.Scanner;
 import tools.KeyboardInput;
@@ -19,19 +20,17 @@ import tools.KeyboardInput;
  */
 public class PurchaseManager {
   private Scanner scanner;
-  private final Customer[] customers;
-  private Product[] products;
+  private List<Customer> customers;
+  private List<Product> products;
   private CustomerManager customerManager;
   private ProductManager  productManager;
   
     public PurchaseManager(Scanner scanner, ProductManager productManager, CustomerManager customerManager) {
-        this.scanner = scanner;
-        this.products = new Product[0];
-        this.customers = new Customer[0];
+        this.scanner = scanner;      
         this.customerManager = customerManager;
         this.productManager = productManager;
     }
-  public Purchase sellProduct(Product[] products, Customer[] customers){
+  public Purchase sellProduct(List<Product> products, List<Customer> customers){
       Purchase purchase = new Purchase();
        /*
             1.Вывести список покупателей
@@ -46,32 +45,25 @@ public class PurchaseManager {
        customerManager.printListCustomers(customers);
        System.out.print("input number customer: ");
        int selectedCustomerNumber =(KeyboardInput.inputNumber(1, 100));
-       purchase.setCustomer(customers[selectedCustomerNumber-1]);
+       purchase.setCustomer(customers.get(selectedCustomerNumber-1));
        productManager.printListProducts(products); 
        int selectedProductNumber = (KeyboardInput.inputNumber(1, 500));
-       Product selectedProduct = products[selectedProductNumber - 1];
-       if (selectedProduct != null) {
-       System.out.print("input quantity: ");   
-       int selectedQuantityProduct = (KeyboardInput.inputNumber(1, 500));
-       if (selectedProduct.getQuantity() >= selectedQuantityProduct){
-        selectedProduct.setQuantity(selectedProduct.getQuantity() - selectedQuantityProduct);
-         System.out.println("Quantity product enough");
-        /*else{
-        System.out.println("Not enough, sold out");
-        }  */   
-        if (selectedProduct.getPrice() <= purchase.getCustomer().getMoney()) {           
-         purchase.setProduct(selectedProduct);
-         purchase.setDate(new GregorianCalendar().getTime());
-         purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - selectedProduct.getPrice());
-        } 
-       }    
-       else {   
-        System.out.println("Not enough money, or quantity product");
-    }    
-  }   else {
-    System.out.println("Invalid product selection");
-}    
+      if (products.get(selectedProductNumber-1).getQuantity() > 0)
+      if (products.get(selectedProductNumber-1).getPrice() <= purchase.getCustomer().getMoney())    
+      {
+          purchase.setProduct(products.get(selectedProductNumber-1));
+          products.get(selectedProductNumber-1).setQuantity(products.get(selectedProductNumber-1).getQuantity()-1);
+          purchase.setDate(new GregorianCalendar().getTime());
+          
+          purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - products.get(selectedProductNumber-1).getPrice());
+      
+      
+      }else{
+          System.out.println("Foto camera not enought or no money");
+          return null;
+      }
+    return purchase;
   
-  return purchase;
+  
   }
 }

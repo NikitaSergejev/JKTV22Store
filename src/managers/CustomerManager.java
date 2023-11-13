@@ -6,6 +6,7 @@
 package managers;
 
 import entity.Customer;
+import java.util.List;
 import java.util.Scanner;
 import tools.KeyboardInput;
 
@@ -33,15 +34,15 @@ public class CustomerManager {
         return customer;
     }
 
-    public void printListCustomers(Customer[] customers) {
+    public void printListCustomers(List<Customer> customers) {
        System.out.println("-----List readers ------");
-        for (int i = 0; i < customers.length; i++) {
+        for (int i = 0; i < customers.size(); i++) {
             System.out.printf("%d. %s %s. %s. %s%n",
                     i+1,
-                    customers[i].getFirstname(),
-                    customers[i].getLastname(),
-                    customers[i].getPhone(),
-                    customers[i].getMoney()
+                    customers.get(i).getFirstname(),
+                    customers.get(i).getLastname(),
+                    customers.get(i).getPhone(),
+                    customers.get(i).getMoney()
             );            
         } 
     }

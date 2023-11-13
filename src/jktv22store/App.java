@@ -9,10 +9,12 @@ import entity.Customer;
 import entity.Product;
 import entity.Purchase;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import managers.CustomerManager;
 import managers.ProductManager;
 import managers.PurchaseManager;
+import managers.SaveManager;
 import tools.KeyboardInput;
 
 /**
@@ -20,18 +22,20 @@ import tools.KeyboardInput;
  * @author nikit
  */
 class App {
-    private Product[] products;
-    private Customer[] customers;
-    private Purchase[] purchaies;
+    private List<Product> products;
+    private List<Customer> customers;
+    private List<Purchase> purchaies;
     private final Scanner scanner;
     private final ProductManager productManager;
     private final CustomerManager customerManager;
     private final PurchaseManager purchaseManager;
+    private final SaveManager saveManager;
     
     public App(){
-      this.products = new Product[0];
-      this.customers = new Customer[0];
-      this.purchaies = new Purchase[0];
+      this.saveManager = new SaveManager();
+      this.products = saveManager.loadProducts();
+      this.customers = saveManager.loadCustomers();
+      this.purchaies = saveManager.loadPurchaies();
       this.scanner = new Scanner(System.in);  
       this.productManager = new ProductManager(scanner);  
       this.customerManager = new CustomerManager(scanner);
@@ -61,10 +65,12 @@ class App {
                     repeat = false;
                     break;
                 case 1:
-                    addProductToArray(productManager.addProduct());                        
+                    products.add(productManager.addProduct());
+                    saveManager.saveProducts(products);                        
                     break;
                 case 2:                   
-                     addCustomerToArray(customerManager.addCustomer());
+                    this.customers.add(customerManager.addCustomer());
+                    saveManager.saveCustomers(customers);
                     break;
                 case 3:
                     productManager.printListProducts(products);
@@ -73,7 +79,11 @@ class App {
                     customerManager.printListCustomers(customers);
                     break;
                 case 5:
-                    addPurchaseToArray(purchaseManager.sellProduct(products, customers)); 
+                    Purchase purchase = purchaseManager.sellProduct(products, customers);
+                    if (purchase !=null) {
+                        this.purchaies.add(purchase);
+                        saveManager.savePurchaies(this.purchaies);
+                    }
                     break;
                 case 6:
                     //productManager.printListSoldProducts(purchaies);
@@ -92,19 +102,19 @@ class App {
         } while (repeat);
     }
 
-    private void addProductToArray(Product product) { //Добавление продукта в массив
-      this.products = Arrays.copyOf(products, products.length + 1);
-      this.products[products.length -1 ] = product;   
+    /*private void addProductToArray(Product product) { //Добавление продукта в массив
+    this.products = Arrays.copyOf(products, products.length + 1);
+    this.products[products.length -1 ] = product;
     }
-
+    
     private void addCustomerToArray(Customer customer) {
-      this.customers = Arrays.copyOf(customers, customers.length + 1);
-        this.customers[customers.length -1 ] = customer;
-    }
+    this.customers = Arrays.copyOf(customers, customers.length + 1);
+    this.customers[customers.length -1 ] = customer;
+    }*/
 
-    private void addPurchaseToArray(Purchase purchase) {     
-        this.purchaies = Arrays.copyOf(purchaies, purchaies.length + 1);
-        this.purchaies[purchaies.length -1] = purchase;
-    }
+    /*private void addPurchaseToArray(Purchase purchase) {
+    this.purchaies = Arrays.copyOf(purchaies, purchaies.length + 1);
+    this.purchaies[purchaies.length -1] = purchase;
+    }*/
 }
     
