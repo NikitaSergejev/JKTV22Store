@@ -66,4 +66,17 @@ public class PurchaseManager {
   
   
   }
+
+    public int printAmoundPriceForAllTheTime(List<Purchase> purchaies) {
+        int totalSpentAmount = 0;
+
+        for (Purchase purchase : purchaies) {
+            totalSpentAmount += purchase.getProduct().getPrice();
+        }
+        System.out.println("Total amount spent: " + totalSpentAmount + "€");
+        return totalSpentAmount;
+            
+        }
+        
+    
 }

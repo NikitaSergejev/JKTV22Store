@@ -33,19 +33,22 @@ class App {
     
     public App(){
       this.saveManager = new SaveManager();
+      this.scanner = new Scanner(System.in);  
+      this.customerManager = new CustomerManager(scanner,null);
+      this.productManager = new ProductManager(scanner, customerManager);      
+      this.purchaseManager = new PurchaseManager(scanner, productManager, customerManager);
+      this.customerManager.setCustomerManager(this.customerManager);
       this.products = saveManager.loadProducts();
       this.customers = saveManager.loadCustomers();
       this.purchaies = saveManager.loadPurchaies();
-      this.scanner = new Scanner(System.in);  
-      this.productManager = new ProductManager(scanner);  
-      this.customerManager = new CustomerManager(scanner);
-      this.purchaseManager = new PurchaseManager(scanner, productManager, customerManager);
     }
+    
     void run() {
          boolean repeat = true;
         Scanner scanner = new Scanner(System.in);
         System.out.println("---------Photography world------------");
         System.out.println("Hello it`s shop where sold photo camera");
+        System.out.println("---------------------------------------");
         do {
             System.out.println("Select task: ");
             System.out.println("0. Exit");
@@ -86,15 +89,13 @@ class App {
                     }
                     break;
                 case 6:
-                    //productManager.printListSoldProducts(purchaies);
+                    productManager.printListSoldProducts(purchaies, customers);
                     break;
                 case 7:
-                    //customerManager.addMoneyToCustomer(customers);
-                    
+                    customerManager.addMoneyToCustomer(customers);
                     break;
                 case 8:
-                    //purchaseManager.printAmoundPriceForAllTheTime();
-                    
+                    purchaseManager.printAmoundPriceForAllTheTime(purchaies);                    
                     break;
                 default:
                     System.out.println("Choice number from list !");;
@@ -102,19 +103,6 @@ class App {
         } while (repeat);
     }
 
-    /*private void addProductToArray(Product product) { //Добавление продукта в массив
-    this.products = Arrays.copyOf(products, products.length + 1);
-    this.products[products.length -1 ] = product;
-    }
     
-    private void addCustomerToArray(Customer customer) {
-    this.customers = Arrays.copyOf(customers, customers.length + 1);
-    this.customers[customers.length -1 ] = customer;
-    }*/
-
-    /*private void addPurchaseToArray(Purchase purchase) {
-    this.purchaies = Arrays.copyOf(purchaies, purchaies.length + 1);
-    this.purchaies[purchaies.length -1] = purchase;
-    }*/
 }
     

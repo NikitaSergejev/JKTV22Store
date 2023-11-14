@@ -5,7 +5,9 @@
  */
 package managers;
 
+import entity.Customer;
 import entity.Product;
+import entity.Purchase;
 import java.util.List;
 import java.util.Scanner;
 import tools.KeyboardInput;
@@ -21,9 +23,13 @@ import tools.KeyboardInput;
  */
 public class ProductManager {
     private Scanner scanner;
-    public ProductManager(Scanner scanner) {
-        this.scanner = scanner;
-    }
+    private List<Customer> customers;
+    private CustomerManager customerManager;
+    
+   public ProductManager(Scanner scanner, CustomerManager customerManager) {
+    this.scanner = scanner;
+    this.customerManager = customerManager;
+}
     public Product addProduct() {
        Product product = new Product();
         System.out.print("Please input type photo camera: ");
@@ -57,4 +63,41 @@ public class ProductManager {
             );             
         }
     }
+    /*
+    *1.Выбираем пользователя
+    *2. Выводиться товар который купил пользователь
+     */
+    public void printListSoldProducts(List<Purchase> purchaies, List<Customer> customers) {
+        
+         System.out.println("----- List sold products ------");
+        // Выводим список покупателей для выбора
+        customerManager.printListCustomers(customers);
+
+        // Запрашиваем у пользователя номер выбранного покупателя        
+        System.out.print("Input the customer's phone number: ");
+        String selectedCustomerPhone = scanner.nextLine();
+       
+        for (int i = 0; i < purchaies.size(); i++) {
+            
+            if (purchaies.get(i).getCustomer().getPhone().equals(selectedCustomerPhone)) {           
+             System.out.printf("%d. \\\"%s\\\" Model %s %s. Price: %s," + 
+                     "Quantity: %s. \n Customer: %s %s, Phone: %s%n",
+                     i+1,
+                     purchaies.get(i).getProduct().getBrand(),
+                     purchaies.get(i).getProduct().getModel(),
+                     purchaies.get(i).getProduct().getType(),
+                     purchaies.get(i).getProduct().getPrice(),
+                     purchaies.get(i).getProduct().getQuantity(),
+                     purchaies.get(i).getCustomer().getFirstname(),
+                     purchaies.get(i).getCustomer().getLastname(),
+                     purchaies.get(i).getCustomer().getPhone()
+                );
+            }else{
+                System.out.println("invalid number phone or customer not buy");
+            }
+        }
+        
+    }
 }
+
+

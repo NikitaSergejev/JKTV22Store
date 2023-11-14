@@ -16,8 +16,11 @@ import tools.KeyboardInput;
  */
 public class CustomerManager {
     private Scanner scanner;
-    public CustomerManager(Scanner scanner) {
-         this.scanner = scanner;
+    private List<Customer> customers;
+    private CustomerManager customerManager;
+    public CustomerManager(Scanner scanner, CustomerManager customerManager) {
+        this.scanner = scanner;
+        this.customerManager = customerManager;
     }
     public Customer addCustomer(){
        Customer customer = new Customer();
@@ -45,6 +48,28 @@ public class CustomerManager {
                     customers.get(i).getMoney()
             );            
         } 
+    }
+
+    public Customer addMoneyToCustomer(List<Customer> customers) {
+        // Выводим список покупателей для выбора
+        customerManager.printListCustomers(customers);
+        System.out.print("input number customer: ");
+       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, 100));
+       System.out.print("input amount money for add: ");
+       int amountMoneyForAdd = (KeyboardInput.inputNumber(1, 5000));
+        if (amountMoneyForAdd != 0) {
+          Customer selectedCustomer = customers.get(selectedCustomerNumber - 1);
+          int currentMoney = selectedCustomer.getMoney();
+          selectedCustomer.setMoney(currentMoney + amountMoneyForAdd);
+          return selectedCustomer;
+            
+        }
+        return null;
+    }
+    
+    public void setCustomerManager(CustomerManager customerManager) {
+       this.customerManager = customerManager;
+       
     }
     
 }
