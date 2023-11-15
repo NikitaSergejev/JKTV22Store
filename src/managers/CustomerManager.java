@@ -38,7 +38,7 @@ public class CustomerManager {
     }
 
     public void printListCustomers(List<Customer> customers) {
-       System.out.println("-----List readers ------");
+       System.out.println("-----List customers ------");
         for (int i = 0; i < customers.size(); i++) {
             System.out.printf("%d. %s %s. %s. %s%n",
                     i+1,
@@ -54,7 +54,7 @@ public class CustomerManager {
         // Выводим список покупателей для выбора
         customerManager.printListCustomers(customers);
         System.out.print("input number customer: ");
-       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, 100));
+       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
        System.out.print("input amount money for add: ");
        int amountMoneyForAdd = (KeyboardInput.inputNumber(1, 5000));
         if (amountMoneyForAdd != 0) {

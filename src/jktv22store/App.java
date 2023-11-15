@@ -60,8 +60,10 @@ class App {
             System.out.println("6.Print list sold out products");
             System.out.println("7.Add money customer");
             System.out.println("8.All price all sold products for all the time");
+            System.out.println("9.Rating most popular customer");
+            System.out.println("10.Rating most popular products");
             System.out.print("Set task: ");
-            int task = KeyboardInput.inputNumber(0, 8);             
+            int task = KeyboardInput.inputNumber(0, 10);             
             switch (task) {
                 case 0:
                     System.out.println("Good buy");
@@ -96,6 +98,14 @@ class App {
                     break;
                 case 8:
                     purchaseManager.printAmoundPriceForAllTheTime(purchaies);                    
+                    break;
+                case 9:
+                    purchaseManager.RatingMostPopularCustomer(this.purchaies);
+                    
+                    break;
+                case 10:
+                    purchaseManager.RatingMostPopularProducts(this.purchaies);
+                    
                     break;
                 default:
                     System.out.println("Choice number from list !");;

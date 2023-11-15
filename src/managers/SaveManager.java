@@ -102,7 +102,7 @@ public class SaveManager {
         }catch (IOException ex) {
              System.out.println("Error I/0 books");
         }catch (ClassNotFoundException ex) {
-             System.out.println("Class Purchase not found");
+             System.out.println("Class Purchases not found");
           }
         return purchaies;  
         

@@ -53,7 +53,7 @@ public class ProductManager {
     public void printListProducts(List<Product> products) {
         System.out.println("-----List products ------");
         for (int i = 0; i < products.size(); i++) {    
-            System.out.printf("%d. %s %s. %s. %s. %s%n",
+            System.out.printf("%d. %s %s. Quantity: %s. %s. %s%n",
                     i+1,
                     products.get(i).getType(),
                     products.get(i).getPrice(),

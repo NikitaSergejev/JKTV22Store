@@ -9,9 +9,13 @@ import entity.Customer;
 import entity.Product;
 import entity.Purchase;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import tools.KeyboardInput;
 
 /**
@@ -44,10 +48,10 @@ public class PurchaseManager {
        */
        customerManager.printListCustomers(customers);
        System.out.print("input number customer: ");
-       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, 100));
+       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
        purchase.setCustomer(customers.get(selectedCustomerNumber-1));
        productManager.printListProducts(products); 
-       int selectedProductNumber = (KeyboardInput.inputNumber(1, 500));
+       int selectedProductNumber = (KeyboardInput.inputNumber(1, products.size()));
       if (products.get(selectedProductNumber-1).getQuantity() > 0)
       if (products.get(selectedProductNumber-1).getPrice() <= purchase.getCustomer().getMoney())    
       {
@@ -66,6 +70,7 @@ public class PurchaseManager {
   
   
   }
+ 
 
     public int printAmoundPriceForAllTheTime(List<Purchase> purchaies) {
         int totalSpentAmount = 0;
@@ -77,6 +82,80 @@ public class PurchaseManager {
         return totalSpentAmount;
             
         }
+     /**
+     * Алгоритм метода
+     * 1.Создание mapProducts
+     * 2.Проходим по всему товару purchaies
+     * и если в mapProducts нет ключа с товаром из истории
+     *  добавляем ключ и устанавливаем значение 1
+     * иначе
+     * по ключу обновляем значение увеличивая его на 1
+     * 3.Отсортировать mapProducts по значениям 
+     * 4. Ввывести ключ и значение сортированного sortedMapProducts
+     */
+
+    public void RatingMostPopularCustomer(List<Purchase> purchaies) {
+           Map<Customer,Integer> mapCustomers = new HashMap<>();
+        for(int i=0; i< purchaies.size(); i++) {
+            if(!mapCustomers.containsKey(purchaies.get(i).getCustomer())){
+                mapCustomers.put(purchaies.get(i).getCustomer(), 1);
+            }else {
+                mapCustomers.put(purchaies.get(i).getCustomer(), mapCustomers.get(purchaies.get(i).getCustomer())+1);
+            }
+        }
+        //sort
+         Map<Customer,Integer> sortedMapCustomers = mapCustomers.entrySet()
+            .stream()
+            .sorted(Map.Entry.<Customer,Integer>comparingByValue().reversed())
+            .collect(Collectors.toMap(
+            Map.Entry:: getKey,
+            Map.Entry::getValue,
+            (oldValue, newValue) -> oldValue,
+            LinkedHashMap::new));
+        int n = 1;
+        for (Map.Entry<Customer,Integer> entry : mapCustomers.entrySet()) {
+            System.out.printf("%d. %s: %s: Purchases %d%n",
+            n,
+            entry.getKey().getFirstname(),
+            entry.getKey().getLastname(),
+            entry.getValue()
+        );
+        n++;                                                                                        
+            
+        }
+    } 
+
+    public void RatingMostPopularProducts(List<Purchase> purchaies) {
+        Map<Product,Integer> mapProducts = new HashMap<>();
+        for(int i=0; i< purchaies.size(); i++) {
+            if(!mapProducts.containsKey(purchaies.get(i).getProduct())){
+                mapProducts.put(purchaies.get(i).getProduct(), 1);
+            }else {
+                mapProducts.put(purchaies.get(i).getProduct(), mapProducts.get(purchaies.get(i).getProduct())+1);
+            }
+        }
+        //sort
+         Map<Product,Integer> sortedMapBooks = mapProducts.entrySet()
+                .stream()
+                .sorted(Map.Entry.<Product,Integer>comparingByValue().reversed())
+                .collect(Collectors.toMap(
+                        Map.Entry:: getKey,
+                        Map.Entry::getValue,
+                        (oldValue, newValue) -> oldValue,
+                        LinkedHashMap::new));
+        int n = 1;
+        for (Map.Entry<Product,Integer> entry : mapProducts.entrySet()) {
+            System.out.printf("%d. %s: %s: Quantity: %d%n",
+                  n,
+                  entry.getKey().getBrand(),
+                  entry.getKey().getModel(),
+                  entry.getValue()
+            );
+            n++;
+            
+        } 
+      
+    }
         
     
 }
