@@ -113,7 +113,7 @@ public class PurchaseManager {
             (oldValue, newValue) -> oldValue,
             LinkedHashMap::new));
         int n = 1;
-        for (Map.Entry<Customer,Integer> entry : mapCustomers.entrySet()) {
+        for (Map.Entry<Customer,Integer> entry : sortedMapCustomers.entrySet()) {
             System.out.printf("%d. %s: %s: Purchases %d%n",
             n,
             entry.getKey().getFirstname(),
@@ -144,7 +144,7 @@ public class PurchaseManager {
                         (oldValue, newValue) -> oldValue,
                         LinkedHashMap::new));
         int n = 1;
-        for (Map.Entry<Product,Integer> entry : mapProducts.entrySet()) {
+        for (Map.Entry<Product,Integer> entry : sortedMapBooks.entrySet()) {
             System.out.printf("%d. %s: %s: Quantity: %d%n",
                   n,
                   entry.getKey().getBrand(),

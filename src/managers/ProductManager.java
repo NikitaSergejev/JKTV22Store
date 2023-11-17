@@ -90,7 +90,7 @@ public class ProductManager {
                      purchaies.get(i).getProduct().getQuantity(),
                      purchaies.get(i).getCustomer().getFirstname(),
                      purchaies.get(i).getCustomer().getLastname(),
-                     purchaies.get(i).getCustomer().getPhone()
+                     purchaies.get(i).getCustomer().getPhone()                   
                 );
             }else{
                 System.out.println("invalid number phone or customer not buy");
