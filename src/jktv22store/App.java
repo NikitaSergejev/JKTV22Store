@@ -89,6 +89,7 @@ class App {
                         this.purchaies.add(purchase);
                         saveManager.savePurchaies(this.purchaies);
                         saveManager.saveCustomers(customers);
+                        saveManager.saveProducts(products);  
                     }
                     break;
                 case 6:

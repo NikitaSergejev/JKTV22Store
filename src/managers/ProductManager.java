@@ -53,7 +53,7 @@ public class ProductManager {
     public void printListProducts(List<Product> products) {
         System.out.println("-----List products ------");
         for (int i = 0; i < products.size(); i++) {    
-            System.out.printf("%d. %s %s. Quantity: %s. %s. %s%n",
+            System.out.printf("%d. Type: %s. Price: %s. Quantity: %s. %s. %s%n",
                     i+1,
                     products.get(i).getType(),
                     products.get(i).getPrice(),
@@ -77,26 +77,32 @@ public class ProductManager {
         System.out.print("Input the customer's phone number: ");
         String selectedCustomerPhone = scanner.nextLine();
        
-        for (int i = 0; i < purchaies.size(); i++) {
-            
-            if (purchaies.get(i).getCustomer().getPhone().equals(selectedCustomerPhone)) {           
-             System.out.printf("%d. \\\"%s\\\" Model %s %s. Price: %s," + 
-                     "Quantity: %s. \n Customer: %s %s, Phone: %s%n",
+        boolean foundPurchase = false; // Флаг для отслеживания наличия хотя бы одной покупки
+
+        for (int i = 0; i < purchaies.size(); i++) {                
+                if (purchaies.get(i).getCustomer().getPhone().equals(selectedCustomerPhone)) {  
+                   foundPurchase = true; // Устанавливаем флаг в true, так как нашли хотя бы одну покупку 
+                System.out.printf("%d. Brand: %s Model %s Type: %s. Price: %s," + 
+                     "Over quantity in store: %s. \n Customer: %s %s, Phone: %s%n",
                      i+1,
                      purchaies.get(i).getProduct().getBrand(),
                      purchaies.get(i).getProduct().getModel(),
                      purchaies.get(i).getProduct().getType(),
                      purchaies.get(i).getProduct().getPrice(),
-                     purchaies.get(i).getProduct().getQuantity(),
+                     purchaies.get(i).getProduct().getQuantity(),                     
                      purchaies.get(i).getCustomer().getFirstname(),
                      purchaies.get(i).getCustomer().getLastname(),
                      purchaies.get(i).getCustomer().getPhone()                   
                 );
-            }else{
-                System.out.println("invalid number phone or customer not buy");
-            }
-        }
         
+    }
+
+    // Проверяем флаг и выводим сообщение об ошибке, если покупок не найдено
+    if (!foundPurchase) {
+        System.out.println("Invalid phone number or customer did not make any purchases.");
+    }
+        
+    }
     }
 }
 
