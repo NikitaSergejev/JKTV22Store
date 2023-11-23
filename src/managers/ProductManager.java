@@ -78,10 +78,10 @@ public class ProductManager {
         String selectedCustomerPhone = scanner.nextLine();
        
         boolean foundPurchase = false; // Флаг для отслеживания наличия хотя бы одной покупки
-
+        foundPurchase = true; // Устанавливаем флаг в true, так как нашли хотя бы одну покупку 
         for (int i = 0; i < purchaies.size(); i++) {                
                 if (purchaies.get(i).getCustomer().getPhone().equals(selectedCustomerPhone)) {  
-                   foundPurchase = true; // Устанавливаем флаг в true, так как нашли хотя бы одну покупку 
+                  
                 System.out.printf("%d. Brand: %s Model %s Type: %s. Price: %s," + 
                      "Over quantity in store: %s. \n Customer: %s %s, Phone: %s%n",
                      i+1,
