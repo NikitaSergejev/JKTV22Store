@@ -7,14 +7,21 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author nikit
  */
+@Entity
 public class Product implements Serializable {
+   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;   
    private String type;
-   public int price;
+   private int price;
    private int quantity;//количество товара 
    private String brand;
    private String Model;
@@ -22,20 +29,13 @@ public class Product implements Serializable {
     public Product() {
     }
 
-    public Product(String type, int price, int quantity, String brand, String Model) {
+    public Product(Long id, String type, int price, int quantity, String brand, String Model) {
+        this.id = id;
         this.type = type;
         this.price = price;
         this.quantity = quantity;
         this.brand = brand;
         this.Model = Model;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public int getPrice() {
@@ -44,6 +44,22 @@ public class Product implements Serializable {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getQuantity() {
@@ -72,12 +88,13 @@ public class Product implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 79 * hash + Objects.hashCode(this.type);
-        hash = 79 * hash + this.price;
-        hash = 79 * hash + this.quantity;
-        hash = 79 * hash + Objects.hashCode(this.brand);
-        hash = 79 * hash + Objects.hashCode(this.Model);
+        int hash = 3;
+        hash = 23 * hash + Objects.hashCode(this.id);
+        hash = 23 * hash + Objects.hashCode(this.type);
+        hash = 23 * hash + this.price;
+        hash = 23 * hash + this.quantity;
+        hash = 23 * hash + Objects.hashCode(this.brand);
+        hash = 23 * hash + Objects.hashCode(this.Model);
         return hash;
     }
 
@@ -108,13 +125,24 @@ public class Product implements Serializable {
         if (!Objects.equals(this.Model, other.Model)) {
             return false;
         }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "Product{" + "type=" + type + ", price=" + price + ", quantity=" + quantity + ", brand=" + brand + ", Model=" + Model + '}';
+        return "Product{" + "id=" + id 
+                + ", type=" + type 
+                + ", price=" + price 
+                + ", quantity=" + quantity 
+                + ", brand=" + brand 
+                + ", Model=" + Model 
+                + '}';
     }
+
+   
 
 }
 

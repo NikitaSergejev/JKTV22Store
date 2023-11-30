@@ -6,6 +6,7 @@
 package managers;
 
 import entity.Customer;
+import facades.CustomerFacade;
 import java.util.List;
 import java.util.Scanner;
 import tools.KeyboardInput;
@@ -15,12 +16,12 @@ import tools.KeyboardInput;
  * @author nikit
  */
 public class CustomerManager {
-    private Scanner scanner;
-    private List<Customer> customers;
-    private CustomerManager customerManager;
-    public CustomerManager(Scanner scanner, CustomerManager customerManager) {
+    private final Scanner scanner;
+    private final CustomerFacade customerFacade;
+    
+    public CustomerManager(Scanner scanner) {
         this.scanner = scanner;
-        this.customerManager = customerManager;
+        this.customerFacade = new CustomerFacade();
     }
     public Customer addCustomer(){
        Customer customer = new Customer();
@@ -37,8 +38,9 @@ public class CustomerManager {
         return customer;
     }
 
-    public void printListCustomers(List<Customer> customers) {
+    public void printListCustomers() {
        System.out.println("-----List customers ------");
+       List<Customer> customers = customerFacade.findAll();
         for (int i = 0; i < customers.size(); i++) {
             System.out.printf("%d. %s %s. %s. %s%n",
                     i+1,
@@ -50,9 +52,9 @@ public class CustomerManager {
         } 
     }
 
-    public Customer addMoneyToCustomer(List<Customer> customers) {
+    public Customer addMoneyToCustomer() {
         // Выводим список покупателей для выбора
-        customerManager.printListCustomers(customers);
+        List<Customer> customers = customerFacade.findAll();
         System.out.print("input number customer: ");
        int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
        System.out.print("input amount money for add: ");
@@ -67,9 +69,12 @@ public class CustomerManager {
         return null;
     }
     
-    public void setCustomerManager(CustomerManager customerManager) {
-       this.customerManager = customerManager;
-       
+    /*public void setCustomerManager(CustomerManager customerManager) {
+    this.customerManager = customerManager;
+    
+    }*/
+    public Customer find(int id) {
+        return customerFacade.find((long)id);
     }
     
 }

@@ -7,66 +7,85 @@ package entity;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 
 /**
  *
  * @author nikit
  */
+@Entity
 public class Customer implements Serializable {
+   @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+   private Long id;
    private String firstname;
    private String lastname;
+   @Column(unique = true)
    private String phone;
-   public int money;
+   private int money;
 
     public Customer() {
     }
 
-    public Customer(String firstname, String lastname, String phone, int money){
+    public Customer(Long id, String firstname, String lastname, String phone, int money) {
+        this.id = id;
         this.firstname = firstname;
         this.lastname = lastname;
         this.phone = phone;
         this.money = money;
-    }
-
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getLastname() {
-        return lastname;
-    }
-
-    public String getPhone() {
-        return phone;
     }
 
     public int getMoney() {
         return money;
     }
 
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
     public void setFirstname(String firstname) {
         this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
     }
 
     public void setLastname(String lastname) {
         this.lastname = lastname;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 13 * hash + Objects.hashCode(this.firstname);
-        hash = 13 * hash + Objects.hashCode(this.lastname);
-        hash = 13 * hash + Objects.hashCode(this.phone);
-        hash = 13 * hash + this.money;
+        hash = 29 * hash + Objects.hashCode(this.id);
+        hash = 29 * hash + Objects.hashCode(this.firstname);
+        hash = 29 * hash + Objects.hashCode(this.lastname);
+        hash = 29 * hash + Objects.hashCode(this.phone);
+        hash = 29 * hash + this.money;
         return hash;
     }
 
@@ -94,13 +113,22 @@ public class Customer implements Serializable {
         if (!Objects.equals(this.phone, other.phone)) {
             return false;
         }
+        if (!Objects.equals(this.id, other.id)) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public String toString() {
-        return "Customer{" + "firstname=" + firstname + ", lastname=" + lastname + ", phone=" + phone + ", money=" + money + '}';
+        return "Customer{" + "id=" + id 
+                + ", firstname=" + firstname 
+                + ", lastname=" + lastname 
+                + ", phone=" + phone 
+                + ", money=" + money 
+                + '}';
     }
-   
+
+    
    
 }

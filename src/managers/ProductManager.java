@@ -8,6 +8,8 @@ package managers;
 import entity.Customer;
 import entity.Product;
 import entity.Purchase;
+import facades.CustomerFacade;
+import facades.ProductFacade;
 import java.util.List;
 import java.util.Scanner;
 import tools.KeyboardInput;
@@ -22,13 +24,14 @@ import tools.KeyboardInput;
    private String Model;
  */
 public class ProductManager {
-    private Scanner scanner;
-    private List<Customer> customers;
-    private CustomerManager customerManager;
+    private final Scanner scanner;
+    private final ProductFacade productFacade;
+    private final CustomerFacade customerFacade;
     
-   public ProductManager(Scanner scanner, CustomerManager customerManager) {
+   public ProductManager(Scanner scanner) {
     this.scanner = scanner;
-    this.customerManager = customerManager;
+    this.productFacade = new ProductFacade();
+    this.customerFacade = new CustomerFacade();
 }
     public Product addProduct() {
        Product product = new Product();
@@ -67,11 +70,11 @@ public class ProductManager {
     *1.Выбираем пользователя
     *2. Выводиться товар который купил пользователь
      */
-    public void printListSoldProducts(List<Purchase> purchaies, List<Customer> customers) {
+    public void printListSoldProducts(List<Purchase> purchaies) {
         
          System.out.println("----- List sold products ------");
         // Выводим список покупателей для выбора
-        customerManager.printListCustomers(customers);
+        List<Customer> customers = customerFacade.findAll();
 
         // Запрашиваем у пользователя номер выбранного покупателя        
         System.out.print("Input the customer's phone number: ");
@@ -104,6 +107,21 @@ public class ProductManager {
         
     }
     }
+    public List<Product> products(){
+        return productFacade.findAll();
+    }
+    
+    public Product findById(int id){
+        return productFacade.find((long)id);
+    }
+     public List<Customer> customers(){
+    return customerFacade.findAll();
+    }
+    
+    public Customer findId(int id){
+    return customerFacade.find((long)id);
+    }
+    
 }
 
 
