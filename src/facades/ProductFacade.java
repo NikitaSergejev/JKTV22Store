@@ -16,7 +16,7 @@ import javax.persistence.Persistence;
  * @author nikit
  */
 public class ProductFacade {
-    private EntityManager em;
+    private final EntityManager em;
 
     public ProductFacade() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JKTV22StorePU");

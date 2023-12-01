@@ -10,6 +10,7 @@ import entity.Product;
 import entity.Purchase;
 import facades.CustomerFacade;
 import facades.ProductFacade;
+import facades.PurchaseFacade;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -25,17 +26,24 @@ import tools.KeyboardInput;
  * @author nikit
  */
 public class PurchaseManager {
-  private Scanner scanner;  
-  private CustomerFacade customerFacade;
-  private ProductFacade  productFacade;
+  private final Scanner scanner;  
+  private final CustomerFacade customerFacade;
+  private final ProductFacade  productFacade;
+  private final PurchaseFacade purchaseFacade;
+  private final CustomerManager customerManager;
+  private final ProductManager productManager;
   
     public PurchaseManager(Scanner scanner) {
         this.scanner = scanner;      
         this.customerFacade = new CustomerFacade();
         this.productFacade = new ProductFacade();
+        this.purchaseFacade = new PurchaseFacade();
+        this.customerManager = new CustomerManager(scanner);
+        this.productManager = new ProductManager(scanner);
     }
-  public Purchase sellProduct(){
+  public void sellProduct(){
       Purchase purchase = new Purchase();
+      List<Customer> customers = customerFacade.findAll();
        /*
             1.Вывести список покупателей
             2.Выбрать покупателя
@@ -46,27 +54,31 @@ public class PurchaseManager {
             6.Добавить в purchase дату покупки товара
             7.Вычисления денег у покупателя после покупки
        */
-       List<Customer> customers = customerFacade.findAll();;
+       customerManager.printListCustomers();    
        System.out.print("input number customer: ");
        int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
        purchase.setCustomer(customers.get(selectedCustomerNumber-1));
        List<Product> products = productFacade.findAll();
+       productManager.printListProducts(); 
        int selectedProductNumber = (KeyboardInput.inputNumber(1, products.size()));
       if (products.get(selectedProductNumber-1).getQuantity() > 0)
       if (products.get(selectedProductNumber-1).getPrice() <= purchase.getCustomer().getMoney())    
       {
           purchase.setProduct(products.get(selectedProductNumber-1));
-          products.get(selectedProductNumber-1).setQuantity(products.get(selectedProductNumber-1).getQuantity()-1);
-          purchase.setDate(new GregorianCalendar().getTime());
           
+          System.out.print("input quantity of the product: ");
+          int quantity = (KeyboardInput.inputNumber(1, products.get(selectedProductNumber - 1).getQuantity()));
+          purchase.setQuantity(quantity);
+            
+          products.get(selectedProductNumber-1).setQuantity(products.get(selectedProductNumber-1).getQuantity()-1);
+          purchase.setDate(new GregorianCalendar().getTime());         
           purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - products.get(selectedProductNumber-1).getPrice());
-      
+          purchaseFacade.create(purchase);
+          System.out.println("Purchase saved successfully!");
       
       }else{
-          System.out.println("Foto camera not enought or no money");
-          return null;
-      }
-    return purchase;
+          System.out.println("Foto camera not enought or no money");         
+      }  
   
   
   }
@@ -92,6 +104,7 @@ public class PurchaseManager {
      * по ключу обновляем значение увеличивая его на 1
      * 3.Отсортировать mapProducts по значениям 
      * 4. Ввывести ключ и значение сортированного sortedMapProducts
+     * 
      */
 
     /* public void RatingMostPopularCustomer(List<Purchase> purchaies) {
@@ -156,6 +169,19 @@ public class PurchaseManager {
     }
     
     }*/
-        
+    /*public List<Product> products(){
+    return productFacade.findAll();
+    }
+    
+    public Product findById(int id){
+    return productFacade.find((long)id);
+    }
+    public List<Customer> customers(){
+    return customerFacade.findAll();
+    }
+    
+    public Customer findId(int id){
+    return customerFacade.find((long)id);
+    }      */
     
 }

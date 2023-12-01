@@ -23,7 +23,7 @@ public class CustomerManager {
         this.scanner = scanner;
         this.customerFacade = new CustomerFacade();
     }
-    public Customer addCustomer(){
+    public void addCustomer(){
        Customer customer = new Customer();
         System.out.print("Input firstname: ");
         customer.setFirstname(scanner.nextLine());
@@ -32,17 +32,17 @@ public class CustomerManager {
         System.out.print("Enter phone number: ");
         customer.setPhone(scanner.nextLine());
         System.out.print("Input your money: ");
-        customer.setMoney(KeyboardInput.inputNumber(1, 50000));
-        System.out.println("Added reader: ");
-        System.out.println(customer.toString());
-        return customer;
+        customer.setMoney(KeyboardInput.inputNumber(1, 50000));       
+        System.out.println("Added customer: ");
+        System.out.println(customer.toString()); 
+        customerFacade.create(customer);
     }
 
     public void printListCustomers() {
        System.out.println("-----List customers ------");
        List<Customer> customers = customerFacade.findAll();
         for (int i = 0; i < customers.size(); i++) {
-            System.out.printf("%d. %s %s. %s. %s%n",
+            System.out.printf("%d. %s %s. %s. %s%n \n",
                     i+1,
                     customers.get(i).getFirstname(),
                     customers.get(i).getLastname(),

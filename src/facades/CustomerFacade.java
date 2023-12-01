@@ -16,7 +16,7 @@ import javax.persistence.Persistence;
  * @author nikit
  */
 public class CustomerFacade {
-    private EntityManager em;
+    private final EntityManager em;
 
     public CustomerFacade() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JKTV22StorePU");
@@ -31,6 +31,7 @@ public class CustomerFacade {
         return em.find(Customer.class, id);
     }
     public List<Customer> findAll(){
+        
         return em.createQuery("SELECT customer FROM Customer customer").getResultList();
     }
     public void edit(Customer customer){

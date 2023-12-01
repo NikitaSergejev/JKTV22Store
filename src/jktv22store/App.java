@@ -38,9 +38,9 @@ class App {
     void run() {
          boolean repeat = true;
         Scanner scanner = new Scanner(System.in);
-        System.out.println("---------Photography world------------");
-        System.out.println("Hello it`s shop where sold photo camera");
-        System.out.println("---------------------------------------");
+        System.out.println("---------Photography world------------\n");
+        System.out.println("Hello it`s shop where sold photo camera\n");
+        System.out.println("---------------------------------------\n");
         do {
             System.out.println("Select task: ");
             System.out.println("0. Exit");
@@ -58,27 +58,25 @@ class App {
             int task = KeyboardInput.inputNumber(0, 10);             
             switch (task) {
                 case 0:
-                    System.out.println("Good buy");
+                    System.out.println("Good buy, see you later");
                     repeat = false;
                     break;
                 case 1:
-                    productManager.addProduct();
-                                          
+                    productManager.addProduct();                                          
                     break;
                 case 2:                   
-                    customerManager.addCustomer();
-                    
+                    customerManager.addCustomer();                   
                     break;
                     case 3:
                     productManager.printListProducts();
                     break;
-                   /*  case 4:
+                     case 4:
                     customerManager.printListCustomers();
                     break;
                     case 5:
                     purchaseManager.sellProduct();
                     break;
-                    case 6:
+                   /* case 6:
                     productManager.printListSoldProducts();
                     break;
                     case 7:
@@ -88,8 +86,7 @@ class App {
                     purchaseManager.printAmoundPriceForAllTheTime();
                     break;
                     case 9:
-                    purchaseManager.RatingMostPopularCustomer();
-                    
+                    purchaseManager.RatingMostPopularCustomer();                    
                     break;
                     case 10:
                     purchaseManager.RatingMostPopularProducts();
