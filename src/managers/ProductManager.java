@@ -33,7 +33,7 @@ public class ProductManager {
     this.productFacade = new ProductFacade();
     this.customerFacade = new CustomerFacade();
 }
-    public Product addProduct() {
+    public void addProduct() {
        Product product = new Product();
         System.out.print("Please input type photo camera: ");
         product.setType(scanner.nextLine());
@@ -44,19 +44,17 @@ public class ProductManager {
         System.out.print("Input brand: ");
         product.setBrand(scanner.nextLine());
         System.out.print("Input model: ");
-        product.setModel(scanner.nextLine());
-        
-        
-       
-        System.out.println("Added product: ");
+        product.setModel(scanner.nextLine());       
+        System.out.println("Added product: \n");
         System.out.println(product.toString());
-        return product;
+        productFacade.create(product);      
     }
 
-    public void printListProducts(List<Product> products) {
+    public void printListProducts() {
         System.out.println("-----List products ------");
+        List<Product> products = productFacade.findAll();
         for (int i = 0; i < products.size(); i++) {    
-            System.out.printf("%d. Type: %s. Price: %s. Quantity: %s. %s. %s%n",
+            System.out.printf("%d. Type: %s. Price: %s. Quantity: %s. %s. %s%n \n",
                     i+1,
                     products.get(i).getType(),
                     products.get(i).getPrice(),
