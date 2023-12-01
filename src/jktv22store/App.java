@@ -29,10 +29,10 @@ class App {
     
     public App(){
       this.scanner = new Scanner(System.in);  
-      this.customerManager = new CustomerManager(scanner,null);
-      this.productManager = new ProductManager(scanner, customerManager);      
-      this.purchaseManager = new PurchaseManager(scanner, productManager, customerManager);
-      this.customerManager.setCustomerManager(this.customerManager);
+      this.customerManager = new CustomerManager(scanner);
+      this.productManager = new ProductManager(scanner);      
+      this.purchaseManager = new PurchaseManager(scanner);
+      //this.customerManager.setCustomerManager(this.customerManager);
     }
     
     void run() {
