@@ -51,8 +51,8 @@ public class PurchaseManager {
             5.Проверка на количества денег у покупателя
             6.Добавить в purchase дату покупки товара
             7.Вычисления денег у покупателя после покупки
-       */      
-        Purchase purchase = new Purchase();
+       */
+       Purchase purchase = new Purchase();
         List<Customer> customers = customerManager.customers();
         List<Product> products = productManager.products();
 
@@ -69,14 +69,17 @@ public class PurchaseManager {
         if (selectedProduct.getQuantity() > 0 && selectedProduct.getPrice() <= purchase.getCustomer().getMoney()) {
             System.out.print("Input quantity of the product: ");
             int quantity = (KeyboardInput.inputNumber(1, selectedProduct.getQuantity()));
-
+            
             purchase.setProduct(selectedProduct);
             purchase.setQuantity(quantity);
             purchase.setDate(new GregorianCalendar().getTime());
-            purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - selectedProduct.getPrice() * quantity);
+            double totalPrice = selectedProduct.getPrice() * quantity;
+            purchase.getCustomer().setMoney((int) (purchase.getCustomer().getMoney() - totalPrice));
 
-            purchaseFacade.create(purchase);
+            
             selectedProduct.setQuantity(selectedProduct.getQuantity() - quantity);
+            purchaseFacade.create(purchase);
+            
 
             System.out.println("Purchase saved successfully!");
         } else {
