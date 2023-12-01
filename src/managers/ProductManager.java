@@ -10,6 +10,7 @@ import entity.Product;
 import entity.Purchase;
 import facades.CustomerFacade;
 import facades.ProductFacade;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import tools.KeyboardInput;
@@ -50,9 +51,10 @@ public class ProductManager {
         productFacade.create(product);      
     }
 
-    public void printListProducts() {
+    public List<Integer> printListProducts() {
         System.out.println("-----List products ------");
         List<Product> products = productFacade.findAll();
+        List<Integer> arrayProductId = new ArrayList<>();
         for (int i = 0; i < products.size(); i++) {    
             System.out.printf("%d. Type: %s. Price: %s. Quantity: %s. %s. %s%n \n",
                     i+1,
@@ -62,7 +64,9 @@ public class ProductManager {
                     products.get(i).getBrand(),
                     products.get(i).getModel()
             );             
+        arrayProductId.add(products.get(i).getId().intValue());
         }
+         return arrayProductId;
     }
     /*
     *1.Выбираем пользователя
@@ -112,13 +116,13 @@ public class ProductManager {
     public Product findById(int id){
         return productFacade.find((long)id);
     }
-     public List<Customer> customers(){
+    /* public List<Customer> customers(){
     return customerFacade.findAll();
     }
     
     public Customer findId(int id){
     return customerFacade.find((long)id);
-    }
+    }*/
     
 }
 

@@ -42,9 +42,7 @@ public class PurchaseManager {
         this.productManager = new ProductManager(scanner);
     }
   public void sellProduct(){
-      Purchase purchase = new Purchase();
-      List<Customer> customers = customerFacade.findAll();
-       /*
+      /*
             1.Вывести список покупателей
             2.Выбрать покупателя
             3.Вывести список товаров
@@ -53,35 +51,39 @@ public class PurchaseManager {
             5.Проверка на количества денег у покупателя
             6.Добавить в purchase дату покупки товара
             7.Вычисления денег у покупателя после покупки
-       */
-       customerManager.printListCustomers();    
-       System.out.print("input number customer: ");
-       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
-       purchase.setCustomer(customers.get(selectedCustomerNumber-1));
-       List<Product> products = productFacade.findAll();
-       productManager.printListProducts(); 
-       int selectedProductNumber = (KeyboardInput.inputNumber(1, products.size()));
-      if (products.get(selectedProductNumber-1).getQuantity() > 0)
-      if (products.get(selectedProductNumber-1).getPrice() <= purchase.getCustomer().getMoney())    
-      {
-          purchase.setProduct(products.get(selectedProductNumber-1));
-          
-          System.out.print("input quantity of the product: ");
-          int quantity = (KeyboardInput.inputNumber(1, products.get(selectedProductNumber - 1).getQuantity()));
-          purchase.setQuantity(quantity);
-            
-          products.get(selectedProductNumber-1).setQuantity(products.get(selectedProductNumber-1).getQuantity()-1);
-          purchase.setDate(new GregorianCalendar().getTime());         
-          purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - products.get(selectedProductNumber-1).getPrice());
-          purchaseFacade.create(purchase);
-          System.out.println("Purchase saved successfully!");
+       */      
+        Purchase purchase = new Purchase();
+        List<Customer> customers = customerManager.customers();
+        List<Product> products = productManager.products();
+
+        List<Integer> listIdCustomers = customerManager.printListCustomers();
+        System.out.print("Input number customer: ");
+        int selectedCustomerNumber = (KeyboardInput.inputNumberFromRange(listIdCustomers));
+        purchase.setCustomer(customers.get(selectedCustomerNumber - 1));
+
+        List<Integer> listIdProducts = productManager.printListProducts();
+        System.out.print("Input number product: ");
+        int selectedProductNumber = (KeyboardInput.inputNumberFromRange(listIdProducts));
+        Product selectedProduct = products.get(selectedProductNumber - 1);
+
+        if (selectedProduct.getQuantity() > 0 && selectedProduct.getPrice() <= purchase.getCustomer().getMoney()) {
+            System.out.print("Input quantity of the product: ");
+            int quantity = (KeyboardInput.inputNumber(1, selectedProduct.getQuantity()));
+
+            purchase.setProduct(selectedProduct);
+            purchase.setQuantity(quantity);
+            purchase.setDate(new GregorianCalendar().getTime());
+            purchase.getCustomer().setMoney(purchase.getCustomer().getMoney() - selectedProduct.getPrice() * quantity);
+
+            purchaseFacade.create(purchase);
+            selectedProduct.setQuantity(selectedProduct.getQuantity() - quantity);
+
+            System.out.println("Purchase saved successfully!");
+        } else {
+            System.out.println("Not enough quantity or not enough money");
+        }
+    }
       
-      }else{
-          System.out.println("Foto camera not enought or no money");         
-      }  
-  
-  
-  }
  
 
     public int printAmoundPriceForAllTheTime(List<Purchase> purchaies) {

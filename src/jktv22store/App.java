@@ -76,7 +76,7 @@ class App {
                     case 5:
                     purchaseManager.sellProduct();
                     break;
-                   /* case 6:
+                  /*  case 6:
                     productManager.printListSoldProducts();
                     break;
                     case 7:

@@ -7,6 +7,7 @@ package managers;
 
 import entity.Customer;
 import facades.CustomerFacade;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import tools.KeyboardInput;
@@ -38,9 +39,10 @@ public class CustomerManager {
         customerFacade.create(customer);
     }
 
-    public void printListCustomers() {
+    public List<Integer> printListCustomers() {
        System.out.println("-----List customers ------");
        List<Customer> customers = customerFacade.findAll();
+       List<Integer> arrayCustomerId = new ArrayList<>();
         for (int i = 0; i < customers.size(); i++) {
             System.out.printf("%d. %s %s. %s. %s%n \n",
                     i+1,
@@ -49,7 +51,9 @@ public class CustomerManager {
                     customers.get(i).getPhone(),
                     customers.get(i).getMoney()
             );            
-        } 
+         arrayCustomerId.add(customers.get(i).getId().intValue());
+        }
+         return arrayCustomerId;
     }
 
     public Customer addMoneyToCustomer() {
@@ -72,9 +76,12 @@ public class CustomerManager {
     /*public void setCustomerManager(CustomerManager customerManager) {
     this.customerManager = customerManager;
     
-    }*/
-    public Customer find(int id) {
-        return customerFacade.find((long)id);
+    }*/  
+    public List<Customer> customers(){
+    return customerFacade.findAll();
     }
     
+    public Customer findById(int id){
+    return customerFacade.find((long)id);
+    }
 }
