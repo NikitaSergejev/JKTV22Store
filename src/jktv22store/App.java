@@ -54,8 +54,9 @@ class App {
             System.out.println("8.All price all sold products for all the time");
             System.out.println("9.Rating most popular customer");
             System.out.println("10.Rating most popular products");
+            System.out.println("11.Add quantity to products");
             System.out.print("Set task: ");
-            int task = KeyboardInput.inputNumber(0, 10);             
+            int task = KeyboardInput.inputNumber(0, 11);             
             switch (task) {
                 case 0:
                     System.out.println("Good buy, see you later");
@@ -67,31 +68,34 @@ class App {
                 case 2:                   
                     customerManager.addCustomer();                   
                     break;
-                    case 3:
+                case 3:
                     productManager.printListProducts();
                     break;
-                     case 4:
+                case 4:
                     customerManager.printListCustomers();
                     break;
-                    case 5:
+                case 5:
                     purchaseManager.sellProduct();
                     break;
-                  /*  case 6:
+                case 6:
                     productManager.printListSoldProducts();
                     break;
-                    case 7:
+                case 7:
                     customerManager.addMoneyToCustomer();
                     break;
-                    case 8:
+                case 8:
                     purchaseManager.printAmoundPriceForAllTheTime();
                     break;
-                    case 9:
+                case 9:
                     purchaseManager.RatingMostPopularCustomer();                    
                     break;
-                    case 10:
+                case 10:
                     purchaseManager.RatingMostPopularProducts();
+                    break;
+                case 11:
+                    productManager.addQuantity();
+                    break;
                     
-                    break;*/
                 default:
                     System.out.println("Choice number from list !");;
             }

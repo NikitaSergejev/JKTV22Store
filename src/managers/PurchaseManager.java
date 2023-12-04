@@ -80,7 +80,11 @@ public class PurchaseManager {
             selectedProduct.setQuantity(selectedProduct.getQuantity() - quantity);
             purchaseFacade.create(purchase);
             
-
+            // Обновление баланса покупателя в базе данных
+            customerFacade.edit(purchase.getCustomer());
+            
+            // Обновление информации о продукте в базе данных
+            productFacade.edit(selectedProduct);
             System.out.println("Purchase saved successfully!");
         } else {
             System.out.println("Not enough quantity or not enough money");
@@ -89,13 +93,14 @@ public class PurchaseManager {
       
  
 
-    public int printAmoundPriceForAllTheTime(List<Purchase> purchaies) {
+    public int printAmoundPriceForAllTheTime() {
+        List<Purchase> purchaies = purchaseFacade.findAll();
         int totalSpentAmount = 0;
 
         for (Purchase purchase : purchaies) {
             totalSpentAmount += purchase.getProduct().getPrice();
         }
-        System.out.println("Total amount spent: " + totalSpentAmount + "€");
+        System.out.println("\n Total amount spent: " + totalSpentAmount + "€ \n" );
         return totalSpentAmount;
             
         }
@@ -112,39 +117,44 @@ public class PurchaseManager {
      * 
      */
 
-    /* public void RatingMostPopularCustomer(List<Purchase> purchaies) {
-    Map<Customer,Integer> mapCustomers = new HashMap<>();
-    for(int i=0; i< purchaies.size(); i++) {
-    if(!mapCustomers.containsKey(purchaies.get(i).getCustomer())){
-    mapCustomers.put(purchaies.get(i).getCustomer(), 1);
-    }else {
-    mapCustomers.put(purchaies.get(i).getCustomer(), mapCustomers.get(purchaies.get(i).getCustomer())+1);
+    public void RatingMostPopularCustomer() {
+        List<Purchase> purchaies = purchaseFacade.findAll();
+        System.out.println("\n");
+        Map<Customer,Integer> mapCustomers = new HashMap<>();
+        for(int i=0; i< purchaies.size(); i++) {
+        if(!mapCustomers.containsKey(purchaies.get(i).getCustomer())){
+             mapCustomers.put(purchaies.get(i).getCustomer(), 1);
+        }else {
+            mapCustomers.put(purchaies.get(i).getCustomer(), mapCustomers.get(purchaies.get(i).getCustomer())+1);
+        }
+        }
+        //sort
+        Map<Customer,Integer> sortedMapCustomers = mapCustomers.entrySet()
+        .stream()
+        .sorted(Map.Entry.<Customer,Integer>comparingByValue().reversed())
+        .collect(Collectors.toMap(
+        Map.Entry:: getKey,
+        Map.Entry::getValue,
+        (oldValue, newValue) -> oldValue,
+        LinkedHashMap::new));
+        int n = 1;
+        for (Map.Entry<Customer,Integer> entry : sortedMapCustomers.entrySet()) {
+             System.out.printf("%d. %s %s: Purchases %d%n",
+        n,
+        entry.getKey().getFirstname(),
+        entry.getKey().getLastname(),
+        entry.getValue()
+        );
+        n++;
+
+        }
+        System.out.println("\n");
     }
-    }
-    //sort
-    Map<Customer,Integer> sortedMapCustomers = mapCustomers.entrySet()
-    .stream()
-    .sorted(Map.Entry.<Customer,Integer>comparingByValue().reversed())
-    .collect(Collectors.toMap(
-    Map.Entry:: getKey,
-    Map.Entry::getValue,
-    (oldValue, newValue) -> oldValue,
-    LinkedHashMap::new));
-    int n = 1;
-    for (Map.Entry<Customer,Integer> entry : sortedMapCustomers.entrySet()) {
-    System.out.printf("%d. %s: %s: Purchases %d%n",
-    n,
-    entry.getKey().getFirstname(),
-    entry.getKey().getLastname(),
-    entry.getValue()
-    );
-    n++;
     
-    }
-    }
-    
-    public void RatingMostPopularProducts(List<Purchase> purchaies) {
+    public void RatingMostPopularProducts() {
+    List<Purchase> purchaies = purchaseFacade.findAll();    
     Map<Product,Integer> mapProducts = new HashMap<>();
+        System.out.println("\n");
     for(int i=0; i< purchaies.size(); i++) {
     if(!mapProducts.containsKey(purchaies.get(i).getProduct())){
     mapProducts.put(purchaies.get(i).getProduct(), 1);
@@ -170,10 +180,10 @@ public class PurchaseManager {
     entry.getValue()
     );
     n++;
-    
+    System.out.println("\n");
     }
     
-    }*/
+    }
     /*public List<Product> products(){
     return productFacade.findAll();
     }

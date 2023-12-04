@@ -19,11 +19,14 @@ import tools.KeyboardInput;
 public class CustomerManager {
     private final Scanner scanner;
     private final CustomerFacade customerFacade;
+  
     
     public CustomerManager(Scanner scanner) {
         this.scanner = scanner;
         this.customerFacade = new CustomerFacade();
+     
     }
+    
     public void addCustomer(){
        Customer customer = new Customer();
         System.out.print("Input firstname: ");
@@ -56,21 +59,18 @@ public class CustomerManager {
          return arrayCustomerId;
     }
 
-    public Customer addMoneyToCustomer() {
+    public void addMoneyToCustomer() {
         // Выводим список покупателей для выбора
         List<Customer> customers = customerFacade.findAll();
+        List<Integer> listIdCustomers = printListCustomers();
         System.out.print("input number customer: ");
        int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
        System.out.print("input amount money for add: ");
        int amountMoneyForAdd = (KeyboardInput.inputNumber(1, 5000));
-        if (amountMoneyForAdd != 0) {
           Customer selectedCustomer = customers.get(selectedCustomerNumber - 1);
           int currentMoney = selectedCustomer.getMoney();
           selectedCustomer.setMoney(currentMoney + amountMoneyForAdd);
-          return selectedCustomer;
-            
-        }
-        return null;
+         customerFacade.edit(selectedCustomer);
     }
     
     /*public void setCustomerManager(CustomerManager customerManager) {
