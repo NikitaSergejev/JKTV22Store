@@ -5,17 +5,14 @@
  */
 package jktv22store;
 
-import entity.Customer;
-import entity.Product;
-import entity.Purchase;
-import java.util.Arrays;
-import java.util.List;
+
 import java.util.Scanner;
 import managers.CustomerManager;
 import managers.ProductManager;
 import managers.PurchaseManager;
 
 import tools.KeyboardInput;
+import tools.StoreTurnoverCalculator;
 
 /**
  *
@@ -26,13 +23,14 @@ class App {
     private final ProductManager productManager;
     private final CustomerManager customerManager;
     private final PurchaseManager purchaseManager;
+    private final StoreTurnoverCalculator storeTurnoverCalculator;
     
     public App(){
       this.scanner = new Scanner(System.in);  
       this.customerManager = new CustomerManager(scanner);
       this.productManager = new ProductManager(scanner);      
-      this.purchaseManager = new PurchaseManager(scanner);
-      //this.customerManager.setCustomerManager(this.customerManager);
+      this.purchaseManager = new PurchaseManager(scanner); 
+      this.storeTurnoverCalculator = new StoreTurnoverCalculator();
     }
     
     void run() {
@@ -55,8 +53,11 @@ class App {
             System.out.println("9.Rating most popular customer");
             System.out.println("10.Rating most popular products");
             System.out.println("11.Add quantity to products");
+            System.out.println("12.edit customer");
+            System.out.println("13.edit product");
+            System.out.println("14.When next company?");
             System.out.print("Set task: ");
-            int task = KeyboardInput.inputNumber(0, 11);             
+            int task = KeyboardInput.inputNumber(0, 13);             
             switch (task) {
                 case 0:
                     System.out.println("Good buy, see you later");
@@ -84,7 +85,7 @@ class App {
                     customerManager.addMoneyToCustomer();
                     break;
                 case 8:
-                    purchaseManager.printAmoundPriceForAllTheTime();
+                    storeTurnoverCalculator.printAmoundPriceForAllTheTime();
                     break;
                 case 9:
                     purchaseManager.RatingMostPopularCustomer();                    
@@ -95,7 +96,16 @@ class App {
                 case 11:
                     productManager.addQuantity();
                     break;
+                case 12:
+                    customerManager.editCustomer();
+                    break;
+                case 13:
+                    productManager.editProduct();
+                    break;
+                case 14:
+                    System.out.println("Developing, try again later");
                     
+                    break;
                 default:
                     System.out.println("Choice number from list !");;
             }

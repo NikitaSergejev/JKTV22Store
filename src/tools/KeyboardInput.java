@@ -59,6 +59,7 @@ public class KeyboardInput {
             System.out.print("For continue press \"y\", exit press \"n\": ");
         }while(true);
     }
+    
     public static int inputNumberFromRange(List<Integer> listId){
         Scanner scanner = new Scanner(System.in);
         int number = -1;

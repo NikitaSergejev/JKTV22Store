@@ -36,8 +36,8 @@ public class PurchaseManager {
     public PurchaseManager(Scanner scanner) {
         this.scanner = scanner;      
         this.customerFacade = new CustomerFacade();
-        this.productFacade = new ProductFacade();
-        this.purchaseFacade = new PurchaseFacade();
+        this.productFacade = new ProductFacade() {};
+        this.purchaseFacade = new PurchaseFacade() {};
         this.customerManager = new CustomerManager(scanner);
         this.productManager = new ProductManager(scanner);
     }
@@ -91,20 +91,9 @@ public class PurchaseManager {
         }
     }
       
- 
 
-    public int printAmoundPriceForAllTheTime() {
-        List<Purchase> purchaies = purchaseFacade.findAll();
-        int totalSpentAmount = 0;
-
-        for (Purchase purchase : purchaies) {
-            totalSpentAmount += purchase.getProduct().getPrice();
-        }
-        System.out.println("\n Total amount spent: " + totalSpentAmount + "€ \n" );
-        return totalSpentAmount;
-            
-        }
-     /**
+    
+     /*
      * Алгоритм метода
      * 1.Создание mapProducts
      * 2.Проходим по всему товару purchaies
@@ -122,12 +111,12 @@ public class PurchaseManager {
         System.out.println("\n");
         Map<Customer,Integer> mapCustomers = new HashMap<>();
         for(int i=0; i< purchaies.size(); i++) {
-        if(!mapCustomers.containsKey(purchaies.get(i).getCustomer())){
-             mapCustomers.put(purchaies.get(i).getCustomer(), 1);
-        }else {
-            mapCustomers.put(purchaies.get(i).getCustomer(), mapCustomers.get(purchaies.get(i).getCustomer())+1);
-        }
-        }
+            if(!mapCustomers.containsKey(purchaies.get(i).getCustomer())){
+                 mapCustomers.put(purchaies.get(i).getCustomer(), 1);
+            }else {
+                mapCustomers.put(purchaies.get(i).getCustomer(), mapCustomers.get(purchaies.get(i).getCustomer())+1);
+                }
+            }
         //sort
         Map<Customer,Integer> sortedMapCustomers = mapCustomers.entrySet()
         .stream()
@@ -152,6 +141,7 @@ public class PurchaseManager {
     }
     
     public void RatingMostPopularProducts() {
+    System.out.println("\n");
     List<Purchase> purchaies = purchaseFacade.findAll();    
     Map<Product,Integer> mapProducts = new HashMap<>();
         System.out.println("\n");

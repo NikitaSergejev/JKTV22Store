@@ -6,7 +6,6 @@
 package facades;
 
 import entity.Product;
-import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -15,27 +14,17 @@ import javax.persistence.Persistence;
  *
  * @author nikit
  */
-public class ProductFacade {
+public abstract class ProductFacade extends AbstractFacade<Product> {
     private final EntityManager em;
 
     public ProductFacade() {
+        super(Product.class);
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("JKTV22StorePU");
         this.em = emf.createEntityManager();
     }
-    public void create(Product product){
-       em.getTransaction().begin();
-          em.persist(product);
-       em.getTransaction().commit();
+    @Override
+    protected EntityManager getEntityManager() {
+        return em;
     }
-    public Product find(Long id){
-        return em.find(Product.class, id);
-    }
-    public List<Product> findAll(){
-        return em.createQuery("SELECT product FROM Product product").getResultList();
-    }
-    public void edit(Product product){
-        em.getTransaction().begin();
-          em.merge(product);
-       em.getTransaction().commit();
-    }
+   
 }

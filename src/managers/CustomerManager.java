@@ -10,6 +10,9 @@ import facades.CustomerFacade;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
+import tools.CustomerManagerUtils;
 import tools.KeyboardInput;
 
 /**
@@ -19,12 +22,13 @@ import tools.KeyboardInput;
 public class CustomerManager {
     private final Scanner scanner;
     private final CustomerFacade customerFacade;
+    private final CustomerManagerUtils utils;
   
     
     public CustomerManager(Scanner scanner) {
         this.scanner = scanner;
         this.customerFacade = new CustomerFacade();
-     
+        this.utils = new CustomerManagerUtils(scanner);
     }
     
     public void addCustomer(){
@@ -64,19 +68,29 @@ public class CustomerManager {
         List<Customer> customers = customerFacade.findAll();
         List<Integer> listIdCustomers = printListCustomers();
         System.out.print("input number customer: ");
-       int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
-       System.out.print("input amount money for add: ");
-       int amountMoneyForAdd = (KeyboardInput.inputNumber(1, 5000));
-          Customer selectedCustomer = customers.get(selectedCustomerNumber - 1);
-          int currentMoney = selectedCustomer.getMoney();
-          selectedCustomer.setMoney(currentMoney + amountMoneyForAdd);
-         customerFacade.edit(selectedCustomer);
+        int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
+        System.out.print("input amount money for add: ");
+        int amountMoneyForAdd = (KeyboardInput.inputNumber(1, 5000));
+        Customer selectedCustomer = customers.get(selectedCustomerNumber - 1);
+        int currentMoney = selectedCustomer.getMoney();
+        selectedCustomer.setMoney(currentMoney + amountMoneyForAdd);
+          customerFacade.edit(selectedCustomer);
+    }
+   
+    public void editCustomer() {
+         // Выводим список покупателей для выбора    
+        List<Customer> customers = customerFacade.findAll();
+        List<Integer> listIdCustomers = printListCustomers();
+        System.out.print("input number customer: ");
+        int selectedCustomerNumber =(KeyboardInput.inputNumber(1, customers.size()));
+        Customer selectedCustomer = customers.get(selectedCustomerNumber - 1);
+        utils.updateCustomerField(selectedCustomer, "input name: ", Customer::getFirstname, Customer::setFirstname);
+        utils.updateCustomerField(selectedCustomer, "input lastname: ", Customer::getLastname, Customer::setLastname);
+        utils.updateCustomerField(selectedCustomer, "input phone number: ", Customer::getPhone, Customer::setPhone);
+        utils.updateMoney(selectedCustomer);
+        customerFacade.edit(selectedCustomer);
     }
     
-    /*public void setCustomerManager(CustomerManager customerManager) {
-    this.customerManager = customerManager;
-    
-    }*/  
     public List<Customer> customers(){
     return customerFacade.findAll();
     }
@@ -84,4 +98,5 @@ public class CustomerManager {
     public Customer findById(int id){
     return customerFacade.find((long)id);
     }
+
 }
