@@ -85,7 +85,7 @@ class App {
                     customerManager.addMoneyToCustomer();
                     break;
                 case 8:
-                    storeTurnoverCalculator.printAmoundPriceForAllTheTime();
+                    storeTurnoverCalculator.printStoreTurnover();
                     break;
                 case 9:
                     purchaseManager.RatingMostPopularCustomer();                    
@@ -107,7 +107,7 @@ class App {
                     
                     break;
                 default:
-                    System.out.println("Choice number from list !");;
+                    System.out.println("Choice number from list !");
             }
         } while (repeat);
     }

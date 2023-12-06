@@ -24,12 +24,18 @@ public class StoreTurnoverCalculator {
     this.purchaseFacade = new PurchaseFacade() {};
 
     }
+     public void printStoreTurnover() {     
+        printAmoundPriceForAllTheTime();
+        printAmountPriceForYear();
+        printAmountPriceForMonth();
+        printAmountPriceForDay();
+    }
     public int printAmoundPriceForAllTheTime() {
         List<Purchase> purchaies = purchaseFacade.findAll();
         int totalSpentAmount = 0;
 
     for (Purchase purchase : purchaies) {
-            totalSpentAmount += purchase.getProduct().getPrice();
+            totalSpentAmount += purchase.getProduct().getPrice()*purchase.getQuantity();
     }
         System.out.println("\n Total amount spent: " + totalSpentAmount + "€ \n" );
         return totalSpentAmount;
@@ -71,7 +77,7 @@ public class StoreTurnoverCalculator {
         int totalSpentAmount = 0;
 
         for (Purchase purchase : purchases) {
-            totalSpentAmount += purchase.getProduct().getPrice();
+            totalSpentAmount += purchase.getProduct().getPrice()*purchase.getQuantity();
         }
 
         return totalSpentAmount;

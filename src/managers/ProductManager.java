@@ -103,16 +103,17 @@ public class ProductManager {
         for (int i = 0; i < purchases.size(); i++) {
             if (purchases.get(i).getCustomer().getId().equals(selectedCustomer.getId())) {
                 System.out.printf("%d. Brand: %s Model %s Type: %s. Price: %s, " + 
-                        "Over quantity in store: %s. \n Customer: %s %s, Phone: %s%n",
+                        "Amount purchased: %s. \n Customer: %s %s, Phone: %s, Date: %s%n",
                         i + 1,
                         purchases.get(i).getProduct().getBrand(),
                         purchases.get(i).getProduct().getModel(),
                         purchases.get(i).getProduct().getType(),
                         purchases.get(i).getProduct().getPrice(),
-                        purchases.get(i).getProduct().getQuantity(),
+                        purchases.get(i).getQuantity(),
                         purchases.get(i).getCustomer().getFirstname(),
                         purchases.get(i).getCustomer().getLastname(),
-                        purchases.get(i).getCustomer().getPhone()
+                        purchases.get(i).getCustomer().getPhone(),
+                        purchases.get(i).getDate()
                 );
                 foundPurchase = true; // Устанавливаем флаг в true, так как нашли хотя бы одну покупку
             }

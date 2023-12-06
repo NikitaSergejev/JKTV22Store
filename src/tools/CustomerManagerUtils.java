@@ -37,4 +37,5 @@ public class CustomerManagerUtils {
         int currentMoney = customer.getMoney();
         customer.setMoney(currentMoney + amountMoneyForAdd);
     }
+    
 }

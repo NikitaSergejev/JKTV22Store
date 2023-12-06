@@ -11,6 +11,8 @@ import entity.Purchase;
 import facades.CustomerFacade;
 import facades.ProductFacade;
 import facades.PurchaseFacade;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -91,102 +93,122 @@ public class PurchaseManager {
         }
     }
       
+    public List<Purchase> calculatePurchasesForPeriod(int field) {
+        List<Purchase> purchases = purchaseFacade.findAll();
+        Calendar today = new GregorianCalendar();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+        String todayString = dateFormat.format(today.getTime());
 
+        return purchases.stream()
+                .filter(purchase -> dateFormat.format(purchase.getDate()).equals(todayString))
+                .collect(Collectors.toList());
+    }
     
-     /*
-     * Алгоритм метода
-     * 1.Создание mapProducts
-     * 2.Проходим по всему товару purchaies
-     * и если в mapProducts нет ключа с товаром из истории
-     *  добавляем ключ и устанавливаем значение 1
-     * иначе
-     * по ключу обновляем значение увеличивая его на 1
-     * 3.Отсортировать mapProducts по значениям 
-     * 4. Ввывести ключ и значение сортированного sortedMapProducts
-     * 
-     */
+     public void calculateCustomerRating(int periodField) {
+        List<Purchase> purchases = calculatePurchasesForPeriod(periodField);
+        Map<Customer, Long> customerRating = purchases.stream()
+                .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
+
+        customerRating.entrySet().stream()
+                .sorted(Map.Entry.<Customer, Long>comparingByValue().reversed())
+                .forEach(entry -> {
+                    System.out.printf("%s %s: Purchases %d%n",
+                            entry.getKey().getFirstname(),
+                            entry.getKey().getLastname(),
+                            entry.getValue()
+                    );
+                });
+    }
+    public void calculateProductRating(int periodField) {
+        List<Purchase> purchases = calculatePurchasesForPeriod(periodField);
+        Map<Product, Long> productRating = purchases.stream()
+                .collect(Collectors.groupingBy(Purchase::getProduct, Collectors.counting()));
+
+        productRating.entrySet().stream()
+                .sorted(Map.Entry.<Product, Long>comparingByValue().reversed())
+                .forEach(entry -> {
+                    System.out.printf("%s %s: Purchases %d%n",
+                            entry.getKey().getBrand(),
+                            entry.getKey().getModel(),
+                            entry.getValue()
+                    );
+                });
+    }
+    
 
     public void RatingMostPopularCustomer() {
-        List<Purchase> purchaies = purchaseFacade.findAll();
         System.out.println("\n");
-        Map<Customer,Integer> mapCustomers = new HashMap<>();
-        for(int i=0; i< purchaies.size(); i++) {
-            if(!mapCustomers.containsKey(purchaies.get(i).getCustomer())){
-                 mapCustomers.put(purchaies.get(i).getCustomer(), 1);
-            }else {
-                mapCustomers.put(purchaies.get(i).getCustomer(), mapCustomers.get(purchaies.get(i).getCustomer())+1);
-                }
+        boolean repeat = true;
+        Scanner scanner = new Scanner(System.in);
+         do {
+            System.out.println("Select task: ");
+            System.out.println("0. Exit");
+            System.out.println("1.Rating for the year");
+            System.out.println("2.Rating for the month");
+            System.out.println("3.Rating for the day");                          
+            System.out.print("Set task: ");
+            System.out.println("\n");
+            int task = KeyboardInput.inputNumber(0, 3);             
+            switch (task) {
+                case 0:
+                    System.out.println("Good buy, see you later");
+                    repeat = false;
+                    break;
+                case 1:
+                    calculateCustomerRating(Calendar.YEAR); // Рейтинг за год                                          
+                    break;
+                case 2:                   
+                     calculateCustomerRating(Calendar.MONTH); // Рейтинг за месяц                   
+                    break;
+                case 3:
+                     calculateCustomerRating(Calendar.DAY_OF_MONTH); // Рейтинг за день
+                    break;
+                 default:
+                    System.out.println("Choice number from list !");
+               
             }
-        //sort
-        Map<Customer,Integer> sortedMapCustomers = mapCustomers.entrySet()
-        .stream()
-        .sorted(Map.Entry.<Customer,Integer>comparingByValue().reversed())
-        .collect(Collectors.toMap(
-        Map.Entry:: getKey,
-        Map.Entry::getValue,
-        (oldValue, newValue) -> oldValue,
-        LinkedHashMap::new));
-        int n = 1;
-        for (Map.Entry<Customer,Integer> entry : sortedMapCustomers.entrySet()) {
-             System.out.printf("%d. %s %s: Purchases %d%n",
-        n,
-        entry.getKey().getFirstname(),
-        entry.getKey().getLastname(),
-        entry.getValue()
-        );
-        n++;
-
-        }
-        System.out.println("\n");
+        
+        }while (repeat);
     }
     
     public void RatingMostPopularProducts() {
-    System.out.println("\n");
-    List<Purchase> purchaies = purchaseFacade.findAll();    
-    Map<Product,Integer> mapProducts = new HashMap<>();
         System.out.println("\n");
-    for(int i=0; i< purchaies.size(); i++) {
-    if(!mapProducts.containsKey(purchaies.get(i).getProduct())){
-    mapProducts.put(purchaies.get(i).getProduct(), 1);
-    }else {
-    mapProducts.put(purchaies.get(i).getProduct(), mapProducts.get(purchaies.get(i).getProduct())+1);
-    }
-    }
-    //sort
-    Map<Product,Integer> sortedMapBooks = mapProducts.entrySet()
-    .stream()
-    .sorted(Map.Entry.<Product,Integer>comparingByValue().reversed())
-    .collect(Collectors.toMap(
-    Map.Entry:: getKey,
-    Map.Entry::getValue,
-    (oldValue, newValue) -> oldValue,
-    LinkedHashMap::new));
-    int n = 1;
-    for (Map.Entry<Product,Integer> entry : sortedMapBooks.entrySet()) {
-    System.out.printf("%d. %s: %s: Quantity: %d%n",
-    n,
-    entry.getKey().getBrand(),
-    entry.getKey().getModel(),
-    entry.getValue()
-    );
-    n++;
-    System.out.println("\n");
-    }
+        boolean repeat = true;
+        Scanner scanner = new Scanner(System.in);
+        do{
+            System.out.println("Select task: ");
+            System.out.println("0. Exit");
+            System.out.println("1.Rating for the year");
+            System.out.println("2.Rating for the month");
+            System.out.println("3.Rating for the day");                          
+            System.out.print("Set task: ");
+            System.out.println("\n");
+            int task = KeyboardInput.inputNumber(0, 3);
+            switch (task) {
+                case 0:
+                     System.out.println("Good buy, see you later");
+                    repeat = false;
+                    break;
+                    
+                case 1:
+                    calculateProductRating(Calendar.YEAR); // Рейтинг за год
+                    break;
+                case 2:
+                    calculateProductRating(Calendar.MONTH); // Рейтинг за месяц
+                    break;
+                case 3:
+                    calculateProductRating(Calendar.DAY_OF_MONTH); // Рейтинг за день
+                    break;
+                default:
+                    System.out.println("Choice number from list !");
+            }
+            
+        }while(repeat);
+       
+        }
     
     }
-    /*public List<Product> products(){
-    return productFacade.findAll();
-    }
+
+
     
-    public Product findById(int id){
-    return productFacade.find((long)id);
-    }
-    public List<Customer> customers(){
-    return customerFacade.findAll();
-    }
     
-    public Customer findId(int id){
-    return customerFacade.find((long)id);
-    }      */
-    
-}
