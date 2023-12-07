@@ -10,6 +10,7 @@ import java.util.Scanner;
 import managers.CustomerManager;
 import managers.ProductManager;
 import managers.PurchaseManager;
+import managers.SaleManager;
 
 import tools.KeyboardInput;
 import tools.StoreTurnoverCalculator;
@@ -24,6 +25,7 @@ class App {
     private final CustomerManager customerManager;
     private final PurchaseManager purchaseManager;
     private final StoreTurnoverCalculator storeTurnoverCalculator;
+    private final SaleManager saleManager;
     
     public App(){
       this.scanner = new Scanner(System.in);  
@@ -31,6 +33,7 @@ class App {
       this.productManager = new ProductManager(scanner);      
       this.purchaseManager = new PurchaseManager(scanner); 
       this.storeTurnoverCalculator = new StoreTurnoverCalculator();
+      this.saleManager = new SaleManager(scanner);
     }
     
     void run() {
@@ -56,8 +59,10 @@ class App {
             System.out.println("12.edit customer");
             System.out.println("13.edit product");
             System.out.println("14.When next company?");
+            System.out.println("15.add sale company");
+            System.out.println("16.edit sale company");
             System.out.print("Set task: ");
-            int task = KeyboardInput.inputNumber(0, 13);             
+            int task = KeyboardInput.inputNumber(0, 16);             
             switch (task) {
                 case 0:
                     System.out.println("Good buy, see you later");
@@ -104,7 +109,13 @@ class App {
                     break;
                 case 14:
                     System.out.println("Developing, try again later");
-                    
+                    saleManager.whenSaleCompany();
+                    break;
+                case 15:
+                    saleManager.addCompany();                    
+                    break;
+                case 16:
+                    saleManager.editCompany();
                     break;
                 default:
                     System.out.println("Choice number from list !");

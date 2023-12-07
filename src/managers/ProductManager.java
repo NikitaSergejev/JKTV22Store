@@ -62,7 +62,7 @@ public class ProductManager {
     }
 
     public List<Integer> printListProducts() {
-        System.out.println("-----List products ------");
+        System.out.println("-----List products ------");      
         List<Product> products = productFacade.findAll();
         List<Integer> arrayProductId = new ArrayList<>();
         for (int i = 0; i < products.size(); i++) {    
@@ -75,8 +75,9 @@ public class ProductManager {
                     products.get(i).getModel()
             );             
         arrayProductId.add(products.get(i).getId().intValue());
-        }
+        }       
          return arrayProductId;
+         
     }
     /*
     *1.Выбираем пользователя
