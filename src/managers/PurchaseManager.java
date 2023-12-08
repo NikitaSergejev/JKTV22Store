@@ -34,6 +34,7 @@ public class PurchaseManager {
   private final PurchaseFacade purchaseFacade;
   private final CustomerManager customerManager;
   private final ProductManager productManager;
+  private final Purchase purchases;
   
     public PurchaseManager(Scanner scanner) {
         this.scanner = scanner;      
@@ -42,6 +43,7 @@ public class PurchaseManager {
         this.purchaseFacade = new PurchaseFacade() {};
         this.customerManager = new CustomerManager(scanner);
         this.productManager = new ProductManager(scanner);
+        this.purchases = new Purchase();
     }
   public void sellProduct(){
       /*
@@ -93,19 +95,53 @@ public class PurchaseManager {
         }
     }
       
-    public List<Purchase> calculatePurchasesForPeriod() {
-        List<Purchase> purchases = purchaseFacade.findAll();
-        Calendar today = new GregorianCalendar();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        String todayString = dateFormat.format(today.getTime());
-
-        return purchases.stream()
-                .filter(purchase -> dateFormat.format(purchase.getDate()).equals(todayString))
-                .collect(Collectors.toList());
+  /*public List<Purchase> calculatePurchasesForDay(int numYear, int numMonth, int numDay) {
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfDay(numYear, numMonth, numDay);
+        return purchases;
     }
+
+    public List<Purchase> calculatePurchasesForMonth(int numMonth) {
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfMonth(numMonth);
+        return purchases;
+    }
+
+    public List<Purchase> calculatePurchasesForYear(int numYear) {
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfYear(numYear);
+        return purchases;
+    }*/
+
+   public void calculateCustomerRatingForDay(int numYear, int numMonth, int numDay) {
+        List<Purchase> purchaseOfDay = calculatePurchasesForDay(numYear, numMonth, numDay);
+        // ... (остальной код)
+    }
+
+    public void calculateProductRatingForDay(int numYear, int numMonth, int numDay) {
+        List<Purchase> purchases = calculatePurchasesForDay(numYear, numMonth, numDay);
+        // ... (остальной код)
+    }
+
+    public void calculateCustomerRatingForMonth(int numYear, int numMonth) {
+        List<Purchase> purchaseOfMonth = calculatePurchasesForMonth(numYear, numMonth);
+        // ... (остальной код)
+    }
+
+    public void calculateProductRatingForMonth(int numYear, int numMonth) {
+        List<Purchase> purchases = calculatePurchasesForMonth(numYear, numMonth);
+        // ... (остальной код)
+    }
+
+    public void calculateCustomerRatingForYear(int numYear) {
+        List<Purchase> purchaseOfYear = calculatePurchasesForYear(numYear);
+        // ... (остальной код)
+    }
+
+    public void calculateProductRatingForYear(int numYear) {
+        List<Purchase> purchases = calculatePurchasesForYear(numYear);
+        // ... (остальной код)
+    }*/
     
-     public void calculateCustomerRating(int numMonth, int dayOfMonth) {
-        List<Purchase> purchaseOfMonth = purchaseFacade.findPurchaseOfMonth(numMonth, dayOfMonth);
+     /*public void calculateCustomerRating(int numMonth, int dayOfMonth, int numYear) {
+        List<Purchase> purchaseOfMonth = purchaseFacade.findPurchaseOfMonth(numMonth);
         Map<Customer, Long> customerRating = purchases.stream()
                 .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
 
@@ -118,9 +154,9 @@ public class PurchaseManager {
                             entry.getValue()
                     );
                 });
-    }
-    public void calculateProductRating() {
-        List<Purchase> purchases = calculatePurchasesForPeriod(periodField);
+    }*/
+   /* public void calculateProductRating() {
+        List<Purchase> purchases = calculatePurchasesForPeriod();
         Map<Product, Long> productRating = purchases.stream()
                 .collect(Collectors.groupingBy(Purchase::getProduct, Collectors.counting()));
 
@@ -133,7 +169,7 @@ public class PurchaseManager {
                             entry.getValue()
                     );
                 });
-    }
+    }*/
     
 
     public void RatingMostPopularCustomer() {
@@ -155,13 +191,13 @@ public class PurchaseManager {
                     repeat = false;
                     break;
                 case 1:
-                    calculateCustomerRating(Calendar.YEAR); // Рейтинг за год                                          
+                    calculateCustomerRating(numYear); // Рейтинг за год                                          
                     break;
                 case 2:                   
-                     calculateCustomerRating(numMonth, dayOfMonth); // Рейтинг за месяц                   
+                     calculateCustomerRating(numMonth); // Рейтинг за месяц                   
                     break;
                 case 3:
-                     calculateCustomerRating(Calendar.DAY_OF_MONTH); // Рейтинг за день
+                     calculateCustomerRating(numMonth, dayOfMonth); // Рейтинг за день
                     break;
                  default:
                     System.out.println("Choice number from list !");
