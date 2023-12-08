@@ -93,7 +93,7 @@ public class PurchaseManager {
         }
     }
       
-    public List<Purchase> calculatePurchasesForPeriod(int field) {
+    public List<Purchase> calculatePurchasesForPeriod() {
         List<Purchase> purchases = purchaseFacade.findAll();
         Calendar today = new GregorianCalendar();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
@@ -104,8 +104,8 @@ public class PurchaseManager {
                 .collect(Collectors.toList());
     }
     
-     public void calculateCustomerRating(int periodField) {
-        List<Purchase> purchases = calculatePurchasesForPeriod(periodField);
+     public void calculateCustomerRating(int numMonth, int dayOfMonth) {
+        List<Purchase> purchaseOfMonth = purchaseFacade.findPurchaseOfMonth(numMonth, dayOfMonth);
         Map<Customer, Long> customerRating = purchases.stream()
                 .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
 
@@ -119,7 +119,7 @@ public class PurchaseManager {
                     );
                 });
     }
-    public void calculateProductRating(int periodField) {
+    public void calculateProductRating() {
         List<Purchase> purchases = calculatePurchasesForPeriod(periodField);
         Map<Product, Long> productRating = purchases.stream()
                 .collect(Collectors.groupingBy(Purchase::getProduct, Collectors.counting()));
@@ -158,7 +158,7 @@ public class PurchaseManager {
                     calculateCustomerRating(Calendar.YEAR); // Рейтинг за год                                          
                     break;
                 case 2:                   
-                     calculateCustomerRating(Calendar.MONTH); // Рейтинг за месяц                   
+                     calculateCustomerRating(numMonth, dayOfMonth); // Рейтинг за месяц                   
                     break;
                 case 3:
                      calculateCustomerRating(Calendar.DAY_OF_MONTH); // Рейтинг за день

@@ -6,6 +6,7 @@
 package facades;
 
 import entity.Purchase;
+import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -25,6 +26,12 @@ public abstract class PurchaseFacade extends AbstractFacade<Purchase> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+
+    public List<Purchase> findPurchaseOfMonth(int numMonth, int dayOfMonth) {
+     
+        
+        return 
     }
    
 }
