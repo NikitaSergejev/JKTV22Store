@@ -33,7 +33,7 @@ public abstract class PurchaseFacade extends AbstractFacade<Purchase> {
         return em;
     }
 
-    public List<Purchase> findPurchaseOfMonth(int numMonth) {
+    public List<Purchase> findPurchaseOfMonth(int numYear, int numMonth) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Purchase> cq = cb.createQuery(Purchase.class);
         Root<Purchase> root = cq.from(Purchase.class);
@@ -47,13 +47,13 @@ public abstract class PurchaseFacade extends AbstractFacade<Purchase> {
         // Выполняем запрос
         return getEntityManager().createQuery(cq).getResultList();
     }
-    public List<Purchase> findPurchaseOfYear(int numYear) {
+    public List<Purchase> findPurchaseOfYear(int numYears) {
         CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Purchase> cq = cb.createQuery(Purchase.class);
         Root<Purchase> root = cq.from(Purchase.class);
 
         // Создаем предикат для условия поиска по месяцу
-        Predicate monthPredicate = (Predicate) cb.equal(cb.function("YEAR", Integer.class, root.get("Date")), numYear);
+        Predicate monthPredicate = (Predicate) cb.equal(cb.function("YEAR", Integer.class, root.get("date")), numYears);
 
         // Добавляем предикат в запрос
         cq.where((Expression<Boolean>) monthPredicate);

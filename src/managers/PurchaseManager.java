@@ -95,81 +95,79 @@ public class PurchaseManager {
         }
     }
       
-  /*public List<Purchase> calculatePurchasesForDay(int numYear, int numMonth, int numDay) {
-        List<Purchase> purchases = purchaseFacade.findPurchaseOfDay(numYear, numMonth, numDay);
-        return purchases;
-    }
-
-    public List<Purchase> calculatePurchasesForMonth(int numMonth) {
-        List<Purchase> purchases = purchaseFacade.findPurchaseOfMonth(numMonth);
-        return purchases;
-    }
-
-    public List<Purchase> calculatePurchasesForYear(int numYear) {
-        List<Purchase> purchases = purchaseFacade.findPurchaseOfYear(numYear);
-        return purchases;
-    }*/
-
+  
+                            /*Rating customer*/
    public void calculateCustomerRatingForDay(int numYear, int numMonth, int numDay) {
-        List<Purchase> purchaseOfDay = calculatePurchasesForDay(numYear, numMonth, numDay);
-        // ... (остальной код)
-    }
+       
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfDay(numYear, numMonth, numDay);
 
-    public void calculateProductRatingForDay(int numYear, int numMonth, int numDay) {
-        List<Purchase> purchases = calculatePurchasesForDay(numYear, numMonth, numDay);
-        // ... (остальной код)
-    }
-
-    public void calculateCustomerRatingForMonth(int numYear, int numMonth) {
-        List<Purchase> purchaseOfMonth = calculatePurchasesForMonth(numYear, numMonth);
-        // ... (остальной код)
-    }
-
-    public void calculateProductRatingForMonth(int numYear, int numMonth) {
-        List<Purchase> purchases = calculatePurchasesForMonth(numYear, numMonth);
-        // ... (остальной код)
-    }
-
-    public void calculateCustomerRatingForYear(int numYear) {
-        List<Purchase> purchaseOfYear = calculatePurchasesForYear(numYear);
-        // ... (остальной код)
-    }
-
-    public void calculateProductRatingForYear(int numYear) {
-        List<Purchase> purchases = calculatePurchasesForYear(numYear);
-        // ... (остальной код)
-    }*/
-    
-     /*public void calculateCustomerRating(int numMonth, int dayOfMonth, int numYear) {
-        List<Purchase> purchaseOfMonth = purchaseFacade.findPurchaseOfMonth(numMonth);
+        // Создаем Map для хранения рейтинга покупателей
         Map<Customer, Long> customerRating = purchases.stream()
                 .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
 
-        customerRating.entrySet().stream()
+        // Сортируем Map по убыванию количества покупок
+        customerRating = customerRating.entrySet().stream()
                 .sorted(Map.Entry.<Customer, Long>comparingByValue().reversed())
-                .forEach(entry -> {
-                    System.out.printf("%s %s: Purchases %d%n",
-                            entry.getKey().getFirstname(),
-                            entry.getKey().getLastname(),
-                            entry.getValue()
-                    );
-                });
-    }*/
-   /* public void calculateProductRating() {
-        List<Purchase> purchases = calculatePurchasesForPeriod();
-        Map<Product, Long> productRating = purchases.stream()
-                .collect(Collectors.groupingBy(Purchase::getProduct, Collectors.counting()));
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
 
-        productRating.entrySet().stream()
-                .sorted(Map.Entry.<Product, Long>comparingByValue().reversed())
-                .forEach(entry -> {
-                    System.out.printf("%s %s: Purchases %d%n",
-                            entry.getKey().getBrand(),
-                            entry.getKey().getModel(),
-                            entry.getValue()
-                    );
-                });
-    }*/
+        // Выводим результаты
+        System.out.println("Customer Rating for " + numYear + "/" + numMonth + "/" + numDay + ":");
+        for (Map.Entry<Customer, Long> entry : customerRating.entrySet()) {
+            System.out.printf("%s %s: Purchases %d%n",
+                    entry.getKey().getFirstname(),
+                    entry.getKey().getLastname(),
+                    entry.getValue()
+            );
+        }
+       
+    }
+   
+    public void calculateCustomerRatingForMonth(int numYear, int numMonth) {
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfMonth(numYear,numMonth);
+        // Создаем Map для хранения рейтинга покупателей
+        Map<Customer, Long> customerRating = purchases.stream()
+                .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
+
+        // Сортируем Map по убыванию количества покупок
+        customerRating = customerRating.entrySet().stream()
+                .sorted(Map.Entry.<Customer, Long>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        // Выводим результаты
+        System.out.println("Customer Rating for " + numYear + "/" + numMonth + "/");
+        for (Map.Entry<Customer, Long> entry : customerRating.entrySet()) {
+            System.out.printf("%s %s: Purchases %d%n",
+                    entry.getKey().getFirstname(),
+                    entry.getKey().getLastname(),
+                    entry.getValue()
+            );
+       
+        }
+    }
+    
+    public void calculateCustomerRatingForYear(int numYears) {
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfYear(numYears);
+        // Создаем Map для хранения рейтинга покупателей
+        Map<Customer, Long> customerRating = purchases.stream()
+                .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
+
+        // Сортируем Map по убыванию количества покупок
+        customerRating = customerRating.entrySet().stream()
+                .sorted(Map.Entry.<Customer, Long>comparingByValue().reversed())
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        // Выводим результаты
+        System.out.println("Customer Rating for " + numYears + "/");
+        for (Map.Entry<Customer, Long> entry : customerRating.entrySet()) {
+            System.out.printf("%s %s: Purchases %d%n",
+                    entry.getKey().getFirstname(),
+                    entry.getKey().getLastname(),
+                    entry.getValue()
+            );
+       
+        }
+    }
+   
     
 
     public void RatingMostPopularCustomer() {
@@ -187,18 +185,36 @@ public class PurchaseManager {
             int task = KeyboardInput.inputNumber(0, 3);             
             switch (task) {
                 case 0:
-                    System.out.println("Good buy, see you later");
+                    System.out.println("Rating closes \n");
                     repeat = false;
                     break;
                 case 1:
-                    calculateCustomerRating(numYear); // Рейтинг за год                                          
-                    break;
-                case 2:                   
-                     calculateCustomerRating(numMonth); // Рейтинг за месяц                   
+                      System.out.print("Введите год: ");
+                      int numYears = (KeyboardInput.inputNumber(1, 2050));
+                      
+                      calculateCustomerRatingForYear(numYears); // Рейтинг за год                                          
+                      break;
+                case 2:     
+                      System.out.print("Введите год: ");
+                      int numYear = (KeyboardInput.inputNumber(1, 2050));
+
+                      System.out.print("Введите месяц: ");
+                      int numMonth = (KeyboardInput.inputNumber(1, 12));
+                      
+                      calculateCustomerRatingForMonth(numYear,numMonth); // Рейтинг за месяц                   
                     break;
                 case 3:
-                     calculateCustomerRating(numMonth, dayOfMonth); // Рейтинг за день
-                    break;
+                      System.out.print("Введите год: ");
+                      int year = (KeyboardInput.inputNumber(1, 2050));
+
+                      System.out.print("Введите месяц: ");
+                      int month = (KeyboardInput.inputNumber(1, 12));
+
+                      System.out.print("Введите день: ");
+                      int day = (KeyboardInput.inputNumber(1, 31));
+
+                      calculateCustomerRatingForDay(year, month, day); // Рейтинг за день
+                      break;
                  default:
                     System.out.println("Choice number from list !");
                
@@ -207,8 +223,25 @@ public class PurchaseManager {
         }while (repeat);
     }
     
-    public void RatingMostPopularProducts() {
-        System.out.println("\n");
+                                    /*Rating products*/
+   /* public void calculateProductRatingForDay(int numYear, int numMonth, int numDay) {
+        List<Purchase> purchases = calculatePurchasesForDay(numYear, numMonth, numDay);
+        // ... (остальной код)
+    }
+   
+    public void calculateProductRatingForMonth(int numYear, int numMonth) {
+        List<Purchase> purchases = calculatePurchasesForMonth(numYear, numMonth);
+        // ... (остальной код)
+    }
+
+    public void calculateProductRatingForYear(int numYear) {
+        List<Purchase> purchases = calculatePurchasesForYear(numYear);
+        // ... (остальной код)
+    }*/
+    
+    
+   public void RatingMostPopularProducts() {
+       /*  System.out.println("\n");
         boolean repeat = true;
         Scanner scanner = new Scanner(System.in);
         do{
@@ -222,7 +255,7 @@ public class PurchaseManager {
             int task = KeyboardInput.inputNumber(0, 3);
             switch (task) {
                 case 0:
-                     System.out.println("Good buy, see you later");
+                     System.out.println("Rating closes \n");
                     repeat = false;
                     break;
                     
@@ -239,7 +272,7 @@ public class PurchaseManager {
                     System.out.println("Choice number from list !");
             }
             
-        }while(repeat);
+        }while(repeat);*/
        
         }
     
