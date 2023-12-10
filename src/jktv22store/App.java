@@ -108,7 +108,6 @@ class App {
                     productManager.editProduct();
                     break;
                 case 14:
-                    System.out.println("Developing, try again later");
                     saleManager.whenSaleCompany();
                     break;
                 case 15:

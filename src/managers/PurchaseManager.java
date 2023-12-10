@@ -22,6 +22,7 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import tools.KeyboardInput;
+import tools.PurchaseManagerUtils;
 
 /**
  *
@@ -35,6 +36,7 @@ public class PurchaseManager {
   private final CustomerManager customerManager;
   private final ProductManager productManager;
   private final Purchase purchases;
+  private final PurchaseManagerUtils utils;
   
     public PurchaseManager(Scanner scanner) {
         this.scanner = scanner;      
@@ -44,6 +46,7 @@ public class PurchaseManager {
         this.customerManager = new CustomerManager(scanner);
         this.productManager = new ProductManager(scanner);
         this.purchases = new Purchase();
+        this.utils = new PurchaseManagerUtils();
     }
   public void sellProduct(){
       /*
@@ -94,81 +97,6 @@ public class PurchaseManager {
             System.out.println("Not enough quantity or not enough money");
         }
     }
-      
-  
-                            /*Rating customer*/
-   public void calculateCustomerRatingForDay(int numYear, int numMonth, int numDay) {
-       
-        List<Purchase> purchases = purchaseFacade.findPurchaseOfDay(numYear, numMonth, numDay);
-
-        // Создаем Map для хранения рейтинга покупателей
-        Map<Customer, Long> customerRating = purchases.stream()
-                .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
-
-        // Сортируем Map по убыванию количества покупок
-        customerRating = customerRating.entrySet().stream()
-                .sorted(Map.Entry.<Customer, Long>comparingByValue().reversed())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-
-        // Выводим результаты
-        System.out.println("Customer Rating for " + numYear + "/" + numMonth + "/" + numDay + ":");
-        for (Map.Entry<Customer, Long> entry : customerRating.entrySet()) {
-            System.out.printf("%s %s: Purchases %d%n",
-                    entry.getKey().getFirstname(),
-                    entry.getKey().getLastname(),
-                    entry.getValue()
-            );
-        }
-       
-    }
-   
-    public void calculateCustomerRatingForMonth(int numYear, int numMonth) {
-        List<Purchase> purchases = purchaseFacade.findPurchaseOfMonth(numYear,numMonth);
-        // Создаем Map для хранения рейтинга покупателей
-        Map<Customer, Long> customerRating = purchases.stream()
-                .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
-
-        // Сортируем Map по убыванию количества покупок
-        customerRating = customerRating.entrySet().stream()
-                .sorted(Map.Entry.<Customer, Long>comparingByValue().reversed())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-
-        // Выводим результаты
-        System.out.println("Customer Rating for " + numYear + "/" + numMonth + "/");
-        for (Map.Entry<Customer, Long> entry : customerRating.entrySet()) {
-            System.out.printf("%s %s: Purchases %d%n",
-                    entry.getKey().getFirstname(),
-                    entry.getKey().getLastname(),
-                    entry.getValue()
-            );
-       
-        }
-    }
-    
-    public void calculateCustomerRatingForYear(int numYears) {
-        List<Purchase> purchases = purchaseFacade.findPurchaseOfYear(numYears);
-        // Создаем Map для хранения рейтинга покупателей
-        Map<Customer, Long> customerRating = purchases.stream()
-                .collect(Collectors.groupingBy(Purchase::getCustomer, Collectors.counting()));
-
-        // Сортируем Map по убыванию количества покупок
-        customerRating = customerRating.entrySet().stream()
-                .sorted(Map.Entry.<Customer, Long>comparingByValue().reversed())
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-
-        // Выводим результаты
-        System.out.println("Customer Rating for " + numYears + "/");
-        for (Map.Entry<Customer, Long> entry : customerRating.entrySet()) {
-            System.out.printf("%s %s: Purchases %d%n",
-                    entry.getKey().getFirstname(),
-                    entry.getKey().getLastname(),
-                    entry.getValue()
-            );
-       
-        }
-    }
-   
-    
 
     public void RatingMostPopularCustomer() {
         System.out.println("\n");
@@ -192,7 +120,7 @@ public class PurchaseManager {
                       System.out.print("Введите год: ");
                       int numYears = (KeyboardInput.inputNumber(1, 2050));
                       
-                      calculateCustomerRatingForYear(numYears); // Рейтинг за год                                          
+                      utils.calculateCustomerRatingForYear(numYears); // Рейтинг за год                                          
                       break;
                 case 2:     
                       System.out.print("Введите год: ");
@@ -201,7 +129,7 @@ public class PurchaseManager {
                       System.out.print("Введите месяц: ");
                       int numMonth = (KeyboardInput.inputNumber(1, 12));
                       
-                      calculateCustomerRatingForMonth(numYear,numMonth); // Рейтинг за месяц                   
+                      utils.calculateCustomerRatingForMonth(numYear,numMonth); // Рейтинг за месяц                   
                     break;
                 case 3:
                       System.out.print("Введите год: ");
@@ -213,7 +141,7 @@ public class PurchaseManager {
                       System.out.print("Введите день: ");
                       int day = (KeyboardInput.inputNumber(1, 31));
 
-                      calculateCustomerRatingForDay(year, month, day); // Рейтинг за день
+                      utils.calculateCustomerRatingForDay(year, month, day); // Рейтинг за день
                       break;
                  default:
                     System.out.println("Choice number from list !");
@@ -223,25 +151,8 @@ public class PurchaseManager {
         }while (repeat);
     }
     
-                                    /*Rating products*/
-   /* public void calculateProductRatingForDay(int numYear, int numMonth, int numDay) {
-        List<Purchase> purchases = calculatePurchasesForDay(numYear, numMonth, numDay);
-        // ... (остальной код)
-    }
-   
-    public void calculateProductRatingForMonth(int numYear, int numMonth) {
-        List<Purchase> purchases = calculatePurchasesForMonth(numYear, numMonth);
-        // ... (остальной код)
-    }
-
-    public void calculateProductRatingForYear(int numYear) {
-        List<Purchase> purchases = calculatePurchasesForYear(numYear);
-        // ... (остальной код)
-    }*/
-    
-    
    public void RatingMostPopularProducts() {
-       /*  System.out.println("\n");
+        System.out.println("\n");
         boolean repeat = true;
         Scanner scanner = new Scanner(System.in);
         do{
@@ -260,19 +171,37 @@ public class PurchaseManager {
                     break;
                     
                 case 1:
-                    calculateProductRating(Calendar.YEAR); // Рейтинг за год
-                    break;
-                case 2:
-                    calculateProductRating(Calendar.MONTH); // Рейтинг за месяц
+                      System.out.print("Введите год: ");
+                      int numYears = (KeyboardInput.inputNumber(2023, 2050));
+                      
+                      utils.calculateProductRatingForYear(numYears); // Рейтинг за год                                          
+                      break;
+                case 2:     
+                      System.out.print("Введите год: ");
+                      int numYear = (KeyboardInput.inputNumber(2023, 2050));
+
+                      System.out.print("Введите месяц: ");
+                      int numMonth = (KeyboardInput.inputNumber(1, 12));
+                      
+                      utils.calculateProductRatingForMonth(numYear,numMonth); // Рейтинг за месяц                   
                     break;
                 case 3:
-                    calculateProductRating(Calendar.DAY_OF_MONTH); // Рейтинг за день
-                    break;
+                      System.out.print("Введите год: ");
+                      int year = (KeyboardInput.inputNumber(2023, 2050));
+
+                      System.out.print("Введите месяц: ");
+                      int month = (KeyboardInput.inputNumber(1, 12));
+
+                      System.out.print("Введите день: ");
+                      int day = (KeyboardInput.inputNumber(1, 31));
+
+                      utils.calculateProductRatingForDay(year, month, day); // Рейтинг за день
+                      break;
                 default:
                     System.out.println("Choice number from list !");
             }
             
-        }while(repeat);*/
+        }while(repeat);
        
         }
     

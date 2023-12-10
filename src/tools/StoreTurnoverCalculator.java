@@ -11,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -25,12 +26,64 @@ public class StoreTurnoverCalculator {
 
     }
      public void printStoreTurnover() {     
-        printAmoundPriceForAllTheTime();
-        printAmountPriceForYear();
-        printAmountPriceForMonth();
-        printAmountPriceForDay();
-    }
-    public int printAmoundPriceForAllTheTime() {
+        System.out.println("\n");
+        boolean repeat = true;
+        Scanner scanner = new Scanner(System.in);
+        do{
+            System.out.println("Select task: ");
+            System.out.println("0. Exit");
+            System.out.println("1.Amount price for year");
+            System.out.println("2.Amount price for month");
+            System.out.println("3.Amount price for day"); 
+            System.out.println("4.Amound price for all the time");
+            System.out.print("Set task: ");
+            System.out.println("\n");
+            int task = KeyboardInput.inputNumber(0, 4);
+            switch (task) {
+                case 0:
+                     System.out.println("Rating closes \n");
+                    repeat = false;
+                    break;
+                    
+                case 1:
+                      System.out.print("Введите год: ");
+                      int numYears = (KeyboardInput.inputNumber(2023, 2050));
+                      
+                      printAmountPriceForYear(numYears); // Рейтинг за год                                          
+                      break;
+                case 2:     
+                      System.out.print("Введите год: ");
+                      int numYear = (KeyboardInput.inputNumber(2023, 2050));
+
+                      System.out.print("Введите месяц: ");
+                      int numMonth = (KeyboardInput.inputNumber(1, 12));
+                      
+                      printAmountPriceForMonth(numYear,numMonth); // Рейтинг за месяц                   
+                    break;
+                case 3:
+                      System.out.print("Введите год: ");
+                      int year = (KeyboardInput.inputNumber(2023, 2050));
+
+                      System.out.print("Введите месяц: ");
+                      int month = (KeyboardInput.inputNumber(1, 12));
+
+                      System.out.print("Введите день: ");
+                      int day = (KeyboardInput.inputNumber(1, 31));
+
+                      printAmountPriceForDay(year, month, day); // Рейтинг за день
+                      break;
+                case 4:
+                    printAmoundPriceForAllTheTime();
+                    break;
+                default:
+                    System.out.println("Choice number from list !");
+            }
+            
+        }while(repeat);
+       
+        }
+    
+    public void printAmoundPriceForAllTheTime() {
         List<Purchase> purchaies = purchaseFacade.findAll();
         int totalSpentAmount = 0;
 
@@ -38,48 +91,49 @@ public class StoreTurnoverCalculator {
             totalSpentAmount += purchase.getProduct().getPrice()*purchase.getQuantity();
     }
         System.out.println("\n Total amount spent: " + totalSpentAmount + "€ \n" );
-        return totalSpentAmount;
+        
             
         }                  
-      public int printAmountPriceForYear() {
-        List<Purchase> purchases = getFilteredPurchases(Calendar.YEAR);
-        int totalSpentAmount = calculateTotalAmount(purchases);
+      public long printAmountPriceForYear(int numYears) {
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfYear(numYears);
+        long totalSpentAmount = calculateTotalAmount(purchases);
         System.out.println("\nTotal amount spent for the year: " + totalSpentAmount + "€\n");
         return totalSpentAmount;
     }
 
-    public int printAmountPriceForMonth() {
-        List<Purchase> purchases = getFilteredPurchases(Calendar.MONTH);
-        int totalSpentAmount = calculateTotalAmount(purchases);
+    public long printAmountPriceForMonth(int numYear, int numMonth) {
+        List<Purchase> purchases = purchaseFacade.findPurchaseOfMonth(numYear,numMonth);
+        long totalSpentAmount = calculateTotalAmount(purchases);
         System.out.println("\nTotal amount spent for the month: " + totalSpentAmount + "€\n");
         return totalSpentAmount;
     }
 
-    public int printAmountPriceForDay() {
-        List<Purchase> purchases = getFilteredPurchases(Calendar.DAY_OF_MONTH);
-        int totalSpentAmount = calculateTotalAmount(purchases);
+    public long printAmountPriceForDay(int numYear, int numMonth, int numDay) {
+       List<Purchase> purchases = purchaseFacade.findPurchaseOfDay(numYear, numMonth, numDay);
+        long totalSpentAmount = calculateTotalAmountForDay(purchases);
         System.out.println("\nTotal amount spent for the day: " + totalSpentAmount + "€\n");
+        return  totalSpentAmount;
+    }
+    
+    
+    private long calculateTotalAmount(List<Purchase> purchases) {
+        long totalSpentAmount = 0;
+
+        for (Purchase purchase : purchases) {
+            totalSpentAmount += purchase.getProduct().getPrice() * purchase.getQuantity();
+        }
+
         return totalSpentAmount;
     }
-
-    private List<Purchase> getFilteredPurchases(int field) {
-        List<Purchase> purchases = purchaseFacade.findAll();
-        Calendar today = new GregorianCalendar();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        String todayString = dateFormat.format(today.getTime());
-
-        return purchases.stream()
-                .filter(purchase -> dateFormat.format(purchase.getDate()).equals(todayString))
-                .collect(Collectors.toList());
-    }
-
-    private int calculateTotalAmount(List<Purchase> purchases) {
-        int totalSpentAmount = 0;
+    
+    private long calculateTotalAmountForDay(List<Purchase> purchases) {
+        long totalSpentAmount = 0;
 
         for (Purchase purchase : purchases) {
             totalSpentAmount += purchase.getProduct().getPrice()*purchase.getQuantity();
         }
 
         return totalSpentAmount;
-    } 
+    }
+        
 }
